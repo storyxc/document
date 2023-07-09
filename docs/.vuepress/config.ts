@@ -3,6 +3,7 @@ import { navbar } from "./config/navConfig";
 import { head } from "./config/headConfig";
 import { defaultTheme } from "vuepress";
 import sidebarConfig from "./config/sidebarConfig";
+import { searchPlugin } from "@vuepress/plugin-search";
 
 export default {
   lang: "zh-CN",
@@ -12,6 +13,26 @@ export default {
   plugins: [
     copyCodePlugin({
       // 插件选项
+    }),
+    searchPlugin({
+      locales: {
+        "/": {
+          placeholder: "搜索",
+        },
+      },
+      hotKeys: [
+        {
+          key: "k",
+          ctrl: true,
+        },
+        {
+          key: "K",
+          ctrl: true,
+        },
+      ],
+      maxSuggestions: 10,
+      // 排除首页
+      isSearchable: (page) => page.path !== "/",
     }),
   ],
   theme: defaultTheme({
