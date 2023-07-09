@@ -18,7 +18,7 @@ export default {
     navbar,
     sidebar: sidebarConfig,
     colorModeSwitch: true,
-    repo: "storyxc",
+    repo: "storyxc/document",
     sidebarDepth: 0,
     editLinkText: "在GitHub上编辑此页",
     lastUpdatedText: "上次更新",
