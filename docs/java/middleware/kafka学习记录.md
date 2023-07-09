@@ -1,0 +1,92 @@
+# kafka学习记录
+
+新公司用的消息中间件是kafka,此前没有接触过,先大致了解下内容,后续再补充
+
+## kafka简介
+
+​		Kafka is a distributed,partitioned,replicated commit logservice。
+
+  Apache Kafka 是一个分布式发布 - 订阅消息系统和一个强大的队列，可以处理大量的数据，并使你能够将消息从一个端点传递到另一个端点。 Kafka 适合离线和在线消息消费。 Kafka 消息保留在磁盘上，并在群集内复制以防止数据丢失。 Kafka 构建在 ZooKeeper 同步服务之上。 它与 Apache Storm 和 Spark 非常好地集成，用于实时流式数据分析。
+
+  Kafka 是一个分布式消息队列，具有高性能、持久化、多副本备份、横向扩展能力。生产者往队列里写消息，消费者从队列里取消息进行业务逻辑。一般在架构设计中起到解耦、削峰、异步处理的作用。
+
+
+
+相关术语:
+
+- broker:kafka集群中的每一台server称为一个kafka实例,也叫broker
+
+- topic:主题,一个topic中保存同一类消息,相当于对消息的分类
+
+- partition:分区,每个topic都可以分成多个partition,每个partition的存储层面都是append log文件.任何发布到该partition的消息都会被追加到log文件尾部.
+
+  >分区的根本原因:kafka基于文件进行存储,当文件内容达到一定程度很容易达到单个磁盘的上限,因此采取分区的办法,一个分区对应一个文件,这样就可以将数据分别存储到不同server上,另外也可以负载均衡,容纳更多消费者
+
+- offset:偏移量,一个分区对应一个磁盘上的文件,而消息在文件中的位置就是offset偏移量,offset为一个long型数字,可以唯一标记一条消息,kafka没有提供其他额外的索引机制来存储offset,所以只能顺序读写,在kafka中几乎不允许对消息进行"随机读写"
+
+总结:
+
+- kafka是一个基于发布-订阅模型的分布式消息系统(消息队列)
+- kafka面向大数据,消息保存在topic中,每个topic有多个partition
+- kafka的消息数据保存在磁盘,每个partition对应磁盘上的一个文件,消息写入就是在append log文件尾部追加内容,文件可以在集群内备份以防丢失
+- 即使消息被消费,kafka也不会立即删除消息,可以通过配置使得过一段时间后自动删除以释放磁盘空间
+- kafka依赖分布式协调服务zookeeper,适合离线/在线消息的消费
+
+## 基本原理
+
+### 1、分布式和分区（distributed、partitioned）
+
+一个topic对应的多个partition分散存储到集群的多个broker上,存储方式是一个partition对应一个文件,每个broker负责存储在自己机器上的partition中的消息读写
+
+### 2、副本（replicated）
+
+kafka可以配置partitions需要备份的个数(replicas),每个partition将会备份到多台机器上,以提高可用性.既然有副本,就涉及到对同一个文件的多个备份如何进行管理调度,kafka的方案是每个partition选举一个server作为leader,由leader负责所有对该分区的读写,其他server作为follower只需要简单的与leader同步,如果原来的leader失效,会重新选举由其他的follower来成为新的leader
+
+如何选举leader:kafka使用zookeeper在broker中选出一个controller,用于partition的分配和leader选举
+
+另外,作为leader的server承担了该分区所有的读写,所以压力较大,从整体考虑,有多少个partition就有多少个leader,kafka会将leader分散到不同的broker上,确保整体负载均衡
+
+### 3、整体数据流程
+
+![202009161733104250.jpg](https://storyxc.com/images/blog//0baa25b0ca394eb68370a5056577f320.jpg)
+
+#### 1）数据生产过程（producer）
+
+生产者写入的消息，可以指定四个参数：topic、partition、key、value其中topic和value是必须指定的，key和partition是可选的。
+
+对于一条记录，先对其进行序列化，然后按照topic和partition，放进对应的发送队列中。如果partition没有指定，那么情况如下：a、Key有填，按照key进行hash，相同的key去一个partition
+
+  b、key没填，round-robin轮询来选partition
+![202009161733117119.png](https://storyxc.com/images/blog//14c59ff6e49b4a25be834e28e97aec79.png)
+
+
+producer会和topic下的所有partition leader保持socket连接，消息经过producer直接通过socket发送至broker。其中partition leader的位置（host：port）注册在zookeeper中，producer作为zookeeper客户端已经注册了watch监听partition leader的变更事件，因此可以准确的知道谁是当前leader。
+
+producer端采用异步发送，多条消息暂且在客户端buffer起来，并将他们批量发送到broker，小数据IO太多，会拖慢整体的网络延迟，批量延迟发送事实上提升了网络效率
+
+### 2）数据消费过程（consumer）
+
+消费者不是以单独形式存在，每一个消费者属于一个consumer group消费者组，一个group包含多个consumer。订阅topic是以一个消费组来订阅的，发送到topic的消息，只会被订阅此topic的每个group中的consumer消费。
+
+如果所有的consumer都具有相同group，那么就像一个点对点的消息系统，如果每个consumer都具有不同的group，那消息就会广播给所有消费者。
+
+具体说来，这实际上是根据partition来分的，==一个partition只能被消费组里的一个消费者消费，但是可以被多个消费组消费==，消费组里的每个消费者是关联到一个partition的，因此有这样的说法：对于一个topic,同一个group中不能有多于partitions个数的consumer同时消费,否则意味着某些消费者无法得到消息
+
+同一个消费组的两个消费者不会同时消费一个partition.
+
+在kafka中,采用了pull的方式，即consumer和broker建立连接之后，主动去pull（或者说fetch）消息，首先consumer端可以根据自己的消费能力适时去fetch消息并处理，且可以控制消息消费的进度（offset）。
+
+partition中的消息只有一个consumer在消费，且不存在消息状态的控制，也没有复杂的消息确认机制，所以kafka的broker端很轻量级。当消息被consumer接受之后，需要保存offset记录消费到哪，以前保存在zk中，由于zk的性能瓶颈，以前的解决方案是consumer一分钟上报一次，在0.10版本后kafka把offset保存，从zk中剥离，保存在consumeroffsets topic的topic中，由此可见，consumer客户端也很轻量级
+
+#### 4、消息传送机制
+
+kafka支持三种消息投递语义，在业务中通常使用At least once模型
+
+- At most once：最多一次，消息可能丢失，不会重复
+- At least once：最少一次，消息不会丢失，可能重复
+- Exactly once：只且一次，消息不丢失不重复，且只消费一次。
+
+## 集群架构
+
+
+![20190805220416350.png](https://storyxc.com/images/blog//4dd59c664ee545948186e2adf332a2be.png)![cluster_architecture.jpg](http://io.storyxc.com/storyxc/1ebece4a4f0c48e8ab3b66a09bd9b9ab.jpg)
