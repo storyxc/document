@@ -8,7 +8,9 @@ grafana的告警可以使用Go Template语法来读取内置的变量数据并�
 
 比如alert query从Loki日志中查询，可以同时从日志中提取出自己需要的关键属性作为标签:
 
-`count_over_time({job="wechat"} |= `订单申请退款失败` | pattern `<_> orderNo=<orderNo> refundNo=<refundNo>` [1m])`
+```shell
+count_over_time({job="wechat"} |= `订单申请退款失败` | pattern `<_> orderNo=<orderNo> refundNo=<refundNo>` [1m])
+```
 
 上面的查询提取了订单号、退款单号的数据，标签会存在`_value_string_`中，可以使用$values访问，在Summary中填写以下模板：
 

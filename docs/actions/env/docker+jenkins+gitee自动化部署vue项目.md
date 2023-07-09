@@ -209,7 +209,7 @@ url和webhook密码分别填写后保存
 
 - 把jenkins用户添加到docker组中然后重启jenkins：`sudo usermod -aG docker jenkins`
 
-  > getent group <groupname> 查看组中有哪些用户
+  > getent group groupname 查看组中有哪些用户
 
 - shell
 
