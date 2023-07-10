@@ -1,5 +1,11 @@
 :root {
     --content-width: 900px;
+    --sidebar-width: 19rem;
+}
+
+.sidebar::-webkit-scrollbar {
+    width: 0;
+    height: 0;
 }
 
 #app {
