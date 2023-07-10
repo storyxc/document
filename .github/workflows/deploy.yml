@@ -1,0 +1,26 @@
+# 自定义当前执行文件的名称
+name: document
+# 整个流程在main分支发生push事件时触发
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest # 运行在ubuntu-latest环境的虚拟机中
+    strategy:
+      matrix:
+        node-version: [20.x]
+    steps:
+    # 获取仓库源码
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }} # 步骤2
+      uses: actions/setup-node@v3 # 作用：安装nodejs
+      with:
+        node-version: ${{ matrix.node-version }} # 版本
+    # 构建和部署
+    - name: Deploy
+      env: # 环境变量
+        GH_TOKEN: ${{ secrets.GH_TOKEN }} # 在仓库中配置的token
+      run: npm install && npm run deploy
