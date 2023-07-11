@@ -49,4 +49,9 @@ export default {
     contributorsText: "贡献者",
   }),
   head,
+  markdown: {
+    code: {
+      lineNumbers: false,
+    },
+  },
 };
