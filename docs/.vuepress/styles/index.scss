@@ -3,8 +3,14 @@
     --sidebar-width: 19rem;
 }
 
-// sidebar
+// sidebar滚动条隐藏
 .sidebar::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+// 代码块滚动条隐藏
+pre[class*="language-"]::-webkit-scrollbar {
     width: 0;
     height: 0;
 }
@@ -14,6 +20,8 @@
 .theme-default-content pre[class*="language-"] {
     padding: 1.8rem 1.5rem 1.25rem;
 }
+
+
 
 div[class*="language-"]::after,
 pre[class*="language-"]::after,

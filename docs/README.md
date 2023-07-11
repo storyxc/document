@@ -5,7 +5,7 @@ heroText: 故事
 tagline: 🚀热爱，是所有的理由和答案
 actions: 
   - text: "进入博客 →"
-    link: "/java/base/String类的深入学习.md"
+    link: "/java"
 features:
   - title: Coding
     details: 编程让我解构世界。

@@ -128,6 +128,10 @@ export default {
       text: "cli",
       children: ["/golang/cli/Cobra.md"],
     },
+    {
+      text: "工具",
+      children: ["/golang/tools/redis-cleaner.md"],
+    }
   ],
   "/linux": [
     {
