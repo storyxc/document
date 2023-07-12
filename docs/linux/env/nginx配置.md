@@ -1,8 +1,6 @@
 # nginx配置
 记录常用、踩坑的nginx配置内容
 
-## events
-
 ## http
 ### upstream
 > upstream指令主要用于负载均衡，设置一系列的后端服务器
@@ -76,3 +74,21 @@ location / {
 }
 ```
 
+## 变量
+- $scheme：请求使用的协议 (http 或 https)。
+- $host：当前请求的主机名。
+- $request_uri：完整的请求 URI。
+- $uri：当前请求的 URI，不包含请求参数。
+- $args：当前请求的参数部分。
+- $request_method：当前请求的方法（GET、POST、等）。
+- $remote_addr：客户端 IP 地址。
+- $server_addr：服务器 IP 地址。
+- $server_name：当前请求的服务器名称。
+- $server_protocol：服务器使用的协议版本。
+- $request_filename：当前请求的文件路径和名称。
+- $document_root：当前请求的根目录。
+- $is_args：如果请求包含参数部分，值为 ?，否则为空字符串。
+- $query_string：当前请求的查询字符串部分。
+- $http_user_agent：客户端发送的 User-Agent 头部信息。
+- $http_referer：客户端发送的 Referer 头部信息。
+- $http_cookie：客户端发送的 Cookie 头部信息。
