@@ -6,12 +6,12 @@
 
 ## 依赖
 
-```pom
+```xml
 <dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>easyexcel</artifactId>
-			<version>2.2.7</version>
-		</dependency>
+	<groupId>com.alibaba</groupId>
+	<artifactId>easyexcel</artifactId>
+	<version>2.2.7</version>
+</dependency>
 ```
 
 
