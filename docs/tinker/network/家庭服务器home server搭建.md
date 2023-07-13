@@ -282,8 +282,6 @@ docker run -d \
 ```shell
  wget https://dlcdn.apache.org/kafka/3.1.1/kafka_2.12-3.1.1.tgz
  tar -xzvf kafka_2.12-3.1.1.tgz
- 
- 
 ```
 
 zookeeper.service
@@ -294,9 +292,9 @@ Description=zookeeper
 
 [Service]
 Type=forking
-Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/java/jdk1.8.0_333/bin"
-ExecStart=/usr/local/kafka/kafka_2.12-3.1.1/bin/zookeeper-server-start.sh -daemon /usr/local/kafka/kafka_2.12-3.1.1/config/zookeeper.properties
-ExecStop=/usr/local/kafka/kafka_2.12-3.1.1/bin/zookeeper-server-start.sh stop
+Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+ExecStart=/usr/local/kafka/bin/zookeeper-server-start.sh -daemon /usr/local/kafka/config/zookeeper.properties
+ExecStop=/usr/local/kafka/bin/zookeeper-server-start.sh stop
 SyslogIdentifier=zookeeper
 
 [Install]
@@ -312,9 +310,9 @@ After=zookeeper.service
 
 [Service]
 Type=forking
-Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/java/jdk1.8.0_333/bin"
-ExecStart=/usr/local/kafka/kafka_2.12-3.1.1/bin/kafka-server-start.sh -daemon /usr/local/kafka/kafka_2.12-3.1.1/config/server.properties
-ExecStop=/usr/local/kafka/kafka_2.12-3.1.1/bin/kafka-server-stop.sh
+Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+ExecStart=/usr/local/kafka/bin/kafka-server-start.sh -daemon /usr/local/kafka/config/server.properties
+ExecStop=/usr/local/kafka/bin/kafka-server-stop.sh
 
 [Install]
 WantedBy=multi-user.target
