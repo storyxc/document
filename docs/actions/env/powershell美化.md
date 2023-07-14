@@ -6,7 +6,7 @@
 
 - https://github.com/microsoft/terminal
 
-- https://docs.microsoft.com/zh-cn/powershell/scripting/install/installing-powershell-on-windows?view=powershell-7.2
+- https://docs.microsoft.com/zh-cn/powershell/scripting/install/installing-powershell-on-windows
 
 
 
