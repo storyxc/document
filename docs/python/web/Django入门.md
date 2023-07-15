@@ -115,3 +115,52 @@ def index(request,param):
 story
 ```
 
+## 创建app
+
+`python3 manage.py startapp demo`
+
+```shell
+djangoProject
+├── demo
+│   ├── __init__.py
+│   ├── admin.py
+│   ├── apps.py
+│   ├── migrations
+│   │   └── __init__.py
+│   ├── models.py
+│   ├── tests.py
+│   └── views.py
+├── djangoProject
+│   ├── __init__.py
+│   ├── __pycache__
+│   │   ├── __init__.cpython-311.pyc
+│   │   └── settings.cpython-311.pyc
+│   ├── asgi.py
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py
+├── manage.py
+└── templates
+```
+
+### 注册app
+
+```python
+# djangoProject/settings.py
+
+# Application definition
+
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+     # 新增注册app
+    'demo.apps.DemoConfig'
+]
+# 可以配置可访问域名
+ALLOWED_HOSTS = ["192.168.2.2"]
+```
+
