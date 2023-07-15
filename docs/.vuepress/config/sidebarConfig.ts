@@ -29,6 +29,7 @@ export default {
         "/java/framework/分布式定时任务解决方案xxl-job.md",
         "/java/framework/后端允许跨域配置.md",
         "/java/framework/自定义MybatisPlusGenerator.md",
+        "/java/framework/Spring配置和条件化组件加载注解.md",
       ],
     },
     {
