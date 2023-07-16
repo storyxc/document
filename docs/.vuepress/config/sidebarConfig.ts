@@ -188,10 +188,6 @@ export default {
       children: ["/frontend/framework/Vue.md"],
     },
     {
-      text: "gists",
-      children: ["/frontend/gists/Vue gists.md", "/frontend/gists/样式.md"],
-    },
-    {
       text: "其他",
       children: [
         "/frontend/others/swift语法.md",
