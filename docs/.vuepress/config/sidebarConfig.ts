@@ -202,7 +202,7 @@ export default {
     {
       text: "Docker",
       children: [
-        "/docker/Dockerfile语法.md",
+        "/docker/Docker/Dockerfile语法.md",
         "/docker/Docker/常用指令.md",
       ],
     },
