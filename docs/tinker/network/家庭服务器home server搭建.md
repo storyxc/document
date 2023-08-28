@@ -221,19 +221,23 @@ systemctl enable docker
 ### qbittorrent
 
 ```shell
-run -d \
-  --name=qbittorrent \
-  -e PUID=1000 \
-  -e PGID=1000 \
-  -e TZ=Asia/Shanghai \
-  -e WEBUI_PORT=18080 \
-  -p 18080:18080 \
-  -p 16881:6881 \
-  -p 16881:6881/udp \
-  -v /mnt/data/docker/qbittorrent/config:/config \
-  -v /mnt/data/docker/qbittorrent/downloads:/downloads \
-  --restart=always \
-  lscr.io/linuxserver/qbittorrent:latest
+version: "3.2"
+
+services:
+  qbittorrent:
+    image: nevinee/qbittorrent:4.3.9
+    container_name: qbittorrent
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=Asia/Shanghai
+      - WEBUI_PORT=18080
+      - BT_PORT=55555
+    volumes:
+      - /mnt/data/docker/qbittorrent/config:/data
+      - /repo:/downloads
+    network_mode: host
+    restart: unless-stopped
 ```
 
 ### aria2
@@ -263,19 +267,34 @@ docker run -d \
 ### jellyfin
 
 ```shell
-docker run -d \
-  --name=jellyfin \
-  -e PUID=1000 \
-  -e PGID=1000 \
-  -e TZ=Asia/Shanghai \
-  -p 18096:8096 \
-  -v /mnt/data/docker/jellyfin/library:/config \
-  -v /mnt/data/downloads/tvseries:/data/tvshows \
-  -v /mnt/data/downloads/movies:/data/movies \
-  --restart=always \
-  --privileged \
-  linuxserver/jellyfin
+version: "3.2"
+
+services:
+  jenkins:
+    image: jenkins/jenkins:2.332.3-jdk11
+    container_name: jenkins
+    environment:
+      - TZ=Asia/Shanghai
+    user: root
+    volumes:
+      - /story/dist:/story/dist
+      - /mnt/data/docker/jenkins/jenkins_data:/var/jenkins_home
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - "8099:8080"
+    restart: unless-stopped
 ```
+
+#### jellyfin硬解
+
+```shell
+# 安装驱动
+apt install intel-media-va-driver
+# 解码支持确认
+/usr/lib/jellyfin-ffmpeg/vainfo
+```
+
+![image-20230828233842999](https://storyxc.com/images/blog/43b766ec-e5a4-4f1c-a06b-97c4b9eb7924.png)
 
 ### kafka
 
