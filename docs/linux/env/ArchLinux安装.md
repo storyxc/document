@@ -75,6 +75,7 @@ swapon /dev/sda2 # 挂载swap
 
 ```shell
 pacstrap -K /mnt base linux linux-firmware
+pacman -Sy
 pacman -S vim
 ```
 
