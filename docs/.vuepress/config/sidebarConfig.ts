@@ -152,6 +152,7 @@ export default {
         "/linux/env/Linux访问权限控制之ACL.md",
         "/linux/env/Linux私钥登陆提示server refused our key.md",
         "/linux/env/Ubuntu-server.md",
+        "/linux/env/ArchLinux安装.md",
       ],
     },
     {
