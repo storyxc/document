@@ -141,7 +141,7 @@ grub-mkconfig -o /boot/grub/grub.cfg  # 生成grub配置
 #### 应用安装
 
 ```shell
-pacman -S networkmanager network-manager-applet dhcpcd dialog os-prober mtools ntfs-3g base-devel linux-headers reflector git
+pacman -S networkmanager network-manager-applet dhcpcd dialog os-prober mtools ntfs-3g base-devel linux-headers reflector git net-tools dnsutils inetutils iproute2
 ```
 
 #### 退出chroot环境重新启动
