@@ -26,7 +26,7 @@ services:
 
 ## 启动容器配置IPFS网关
 
-```text
+```txt
 https://cloudflare-ipfs.com
 https://dweb.link
 https://ipfs.io

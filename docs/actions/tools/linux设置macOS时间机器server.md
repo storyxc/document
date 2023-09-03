@@ -10,7 +10,7 @@
 
 ## 添加Time Machine配置
 
-```conf
+```txt
 [Time Machine]
 path = /mnt/data/backup/time_machine
 time machine = yes

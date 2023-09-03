@@ -1,8 +1,9 @@
 # mysql启动报错排查及处理
 
-今天访问我自己的老博客（www.storyxc.com）发现网站挂掉了，ssh上去看了一下nginx和我自己的java后台博客服务都挂掉了，可能是阿里云抽风服务器重启了。然后重启了nignx和服务访问了一下，查询一直在pending，再去看后台日志，发现获取不到连接，估计是mysql也挂了。
+今天访问我自己的老博客（www.storyxc.com
+）发现网站挂掉了，ssh上去看了一下nginx和我自己的java后台博客服务都挂掉了，可能是阿里云抽风服务器重启了。然后重启了nignx和服务访问了一下，查询一直在pending，再去看后台日志，发现获取不到连接，估计是mysql也挂了。
 
-```log
+```txt
 org.mybatis.spring.MyBatisSystemException: nested exception is org.apache.ibatis.exceptions.PersistenceException: 
 ### Error querying database.  Cause: org.springframework.jdbc.CannotGetJdbcConnectionException: Failed to obtain JDBC Connection; nested exception is com.mysql.cj.jdbc.exceptions.Communi
 cationsException: Communications link failure
@@ -47,17 +48,13 @@ The last packet sent successfully to the server was 0 milliseconds ago. The driv
 
 这才想起来当时没给mysql配置错误日志路径。
 
-
-
 给mysql配置错误文件的路径：vim /etc/my.cnf
 
 在[mysqld]下面加一行：`log_error=/var/log/mysql/error.log` ，然后创建/var/log/mysql这个目录
 
 再次启动，依旧报错，但这次我们可以去看错误日志了。继续 `less /var/log/mysql/error.log`
 
-
-
-```log
+```txt
 210627 00:34:02 mysqld_safe Starting mysqld daemon with databases from /var/lib/mysql
 2021-06-27 00:34:03 0 [Warning] TIMESTAMP with implicit DEFAULT value is deprecated. Please use --explicit_defaults_for_timestamp server option (see documentation for more details).
 2021-06-27 00:34:03 3127 [Note] Plugin 'FEDERATED' is disabled.
@@ -79,8 +76,6 @@ InnoDB: mmap(136019968 bytes) failed; errno 12
 2021-06-27 00:34:03 3127 [Note] Binlog end
 ```
 
-
-
 查看内存情况：`free -h`，由于我买的是阿里云的轻量级应用服务器-穷逼版，只有2G内存
 
 ```bash
@@ -88,6 +83,7 @@ InnoDB: mmap(136019968 bytes) failed; errno 12
      Mem:           1.8G        1.2G        245M         88M        323M        268M
      Swap:           0B          0B          0B
 ```
+
 swap为0，执行命令建立临时分区
 
 ```bash
@@ -104,15 +100,11 @@ Mem:           1.8G        1.3G         82M         88M        463M        236M
 Swap:          127M          0B        127M
 ```
 
-
-
 swap分区已存在，执行命令使系统重启swap分区自动加载：vim /etc/fstab
 
 ```bash
 /swap swap swap defaults 0 0
 ```
-
-
 
 再次启动 还是他喵不行，执行命令查看下当前内存占用大户。
 

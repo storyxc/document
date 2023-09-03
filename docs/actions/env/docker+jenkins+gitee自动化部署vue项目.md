@@ -41,7 +41,7 @@ docker run --name jenkins -dp 8099:8080 -v /story/dist:/story/dist -v ~/jenkins_
 # 挂载时区的目录是因为镜像中的linux系统默认时区非北京时间，会导致时间显示不正确
 ```
 
-- 启动后直接访问本机8099端口：http://localhost:8099/（我这里是本地测试，实际请替换成自己的服务器地址）
+- 启动后直接访问本机8099端口：`http://localhost:8099/`（我这里是本地测试，实际请替换成自己的服务器地址）
 
 ## apt安装
 

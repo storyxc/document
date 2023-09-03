@@ -4,28 +4,29 @@
 
 ## Spring Cloud Config
 
-SpringCloud子项目，提供了分布式系统中外部配置管理的能力，分为`server`和`client`两部分。[官网地址](https://spring.io/projects/spring-cloud-config)
-
-
+SpringCloud子项目，提供了分布式系统中外部配置管理的能力，分为`server`和`client`
+两部分。[官网地址](https://spring.io/projects/spring-cloud-config)
 
 ## 配合git仓库使用
 
-建立一个git仓库，将配置文件放在仓库里，配置文件格式应用名-profile.properties(yml)，多服务的情况包名可根据服务前缀命名，在配置中心server端配置中增加search-path配置即可，比如多个包名app-1/app-2，可以配置search-path：app-*
+建立一个git仓库，将配置文件放在仓库里，配置文件格式应用名-profile.properties(yml)
+，多服务的情况包名可根据服务前缀命名，在配置中心server端配置中增加search-path配置即可，比如多个包名app-1/app-2，可以配置search-path：app-*
 
 ## 服务端
 
 ### 依赖
 
 ```xml
+
 <dependencies>
-  <dependency>
-    <groupId>org.springframework.cloud</groupId>
-    <artifactId>spring-cloud-config-server</artifactId>
-  </dependency>
-  <dependency>
-    <groupId>org.springframework.cloud</groupId>
-    <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-  </dependency>
+    <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-config-server</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+    </dependency>
 </dependencies>
 ```
 
@@ -71,8 +72,6 @@ public class ConfigCenterApplication {
 }
 ```
 
-
-
 ## 服务端
 
 ### 依赖
@@ -80,8 +79,8 @@ public class ConfigCenterApplication {
 ```xml
 <!--springcloud config客户端-->
 <dependency>
-  <groupId>org.springframework.cloud</groupId>
-  <artifactId>spring-cloud-config-client</artifactId>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-config-client</artifactId>
 </dependency>
 ```
 
@@ -105,12 +104,15 @@ eureka:
 ```
 
 ::: tip  
-SpringCloudConfig配合服务发现使用时，必须在bootstrap.yaml(或环境变量)开启服务发现`spring.cloud.config.discovery.enabled=true`，并且要配置注册中心的地址`eureka.client.serviceUrl.defaultZone`，服务启动时会首先去注册中心找到配置中心server。
+SpringCloudConfig配合服务发现使用时，必须在bootstrap.yaml(或环境变量)
+开启服务发现`spring.cloud.config.discovery.enabled=true`，并且要配置注册中心的地址`eureka.client.serviceUrl.defaultZone`
+，服务启动时会首先去注册中心找到配置中心server。
 
 :::
 
 The HTTP service has resources in the following form:
-```text
+
+```txt
 /{application}/{profile}[/{label}]
 /{application}-{profile}.yml
 /{label}/{application}-{profile}.yml
@@ -120,14 +122,26 @@ The HTTP service has resources in the following form:
 
 #### 以下引自官网
 
->### [Discovery First Bootstrap](https://docs.spring.io/spring-cloud-config/docs/2.2.8.RELEASE/reference/html/#discovery-first-bootstrap)
+> ### [Discovery First Bootstrap](https://docs.spring.io/spring-cloud-config/docs/2.2.8.RELEASE/reference/html/#discovery-first-bootstrap)
 >
->If you use a `DiscoveryClient` implementation, such as Spring Cloud Netflix and Eureka Service Discovery or Spring Cloud Consul, you can have the Config Server register with the Discovery Service. However, in the default “Config First” mode, clients cannot take advantage of the registration.
+>If you use a `DiscoveryClient` implementation, such as Spring Cloud Netflix and Eureka Service Discovery or Spring
+> Cloud Consul, you can have the Config Server register with the Discovery Service. However, in the default “Config First”
+> mode, clients cannot take advantage of the registration.
 >
->If you prefer to use `DiscoveryClient` to locate the Config Server, you can do so by setting `spring.cloud.config.discovery.enabled=true` (the default is `false`). The net result of doing so is that client applications all need a `bootstrap.yml` (or an environment variable) with the appropriate discovery configuration. For example, with Spring Cloud Netflix, you need to define the Eureka server address (for example, in `eureka.client.serviceUrl.defaultZone`). The price for using this option is an extra network round trip on startup, to locate the service registration. The benefit is that, as long as the Discovery Service is a fixed point, the Config Server can change its coordinates. The default service ID is `configserver`, but you can change that on the client by setting `spring.cloud.config.discovery.serviceId` (and on the server, in the usual way for a service, such as by setting `spring.application.name`).
+>If you prefer to use `DiscoveryClient` to locate the Config Server, you can do so by
+> setting `spring.cloud.config.discovery.enabled=true` (the default is `false`). The net result of doing so is that client
+> applications all need a `bootstrap.yml` (or an environment variable) with the appropriate discovery configuration. For
+> example, with Spring Cloud Netflix, you need to define the Eureka server address (for example,
+> in `eureka.client.serviceUrl.defaultZone`). The price for using this option is an extra network round trip on startup,
+> to locate the service registration. The benefit is that, as long as the Discovery Service is a fixed point, the Config
+> Server can change its coordinates. The default service ID is `configserver`, but you can change that on the client by
+> setting `spring.cloud.config.discovery.serviceId` (and on the server, in the usual way for a service, such as by
+> setting `spring.application.name`).
 
 ## 坑
 
 配置中心启动后，其他服务向配置中心获取配置文件时，配置中心会去git上拉配置并缓存在本地的临时目录。
 
-默认情况下，它们被放在带有config-repo-前缀的系统临时目录中。例如，在linux上，它可以是`/tmp/config-repo-<randomid>`。一些操作系统会定期清理临时目录，导致意料之外的情况发生，例如丢失属性。需要在配置文件中增加配置`spring.cloud.config.server.git.basedir`或`spring.cloud.config.server.svn.basedir`来指定一个不在系统临时路径下的目录。
+默认情况下，它们被放在带有config-repo-前缀的系统临时目录中。例如，在linux上，它可以是`/tmp/config-repo-<randomid>`
+。一些操作系统会定期清理临时目录，导致意料之外的情况发生，例如丢失属性。需要在配置文件中增加配置`spring.cloud.config.server.git.basedir`
+或`spring.cloud.config.server.svn.basedir`来指定一个不在系统临时路径下的目录。

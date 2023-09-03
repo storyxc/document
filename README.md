@@ -1,3 +1,3 @@
 # 文档
 
-使用Vuepress2.0搭建
+使用VitePress搭建
