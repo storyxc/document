@@ -545,3 +545,75 @@ docker cp grafana:/etc/grafana.ini ~/
 grafana监控大盘模板
 
 `https://grafana.com/api/dashboards/12633/revisions/1/download`
+
+### Bitwarden
+
+> https://bitwarden.com/help/install-on-premise-linux/
+
+#### Configure your domain
+
+配置域名解析，Bitwarden默认使用`80`和`443`端口，可以执行安装后在`bwdata/config.yaml`修改端口
+
+```yaml
+http_prt: 80
+https_port: 443
+```
+
+> 修改完`bwdata/config.yaml`后需要执行`./bitwarden.sh rebuild`
+
+#### Install Docker and Docker Compose
+
+`curl -fsSL https://get.docker.com | sudo sh`
+
+#### Create a Bitwarden user & directory from which to complete installation.
+
+```shell
+sudo adduser bitwarden
+sudo passwd bitwarden
+sudo groupadd docker
+sudo usermod -aG docker bitwarden
+sudo mkdir /opt/bitwarden
+sudo chmod -R 700 /opt/bitwarden
+sudo chown -R bitwarden:bitwarden /opt/bitwarden
+```
+
+
+
+#### Retrieve an installation id and key from [**https://bitwarden.com/host**](https://bitwarden.com/host/) for use in installation.
+
+For more information, see [What are my installation id and installation key used for?](https://bitwarden.com/help/hosting-faqs/#general)
+
+#### Install Bitwarden on your machine.
+
+```shell
+curl -Lso bitwarden.sh "https://func.bitwarden.com/api/dl/?app=self-host&platform=linux" && chmod 700 bitwarden.sh
+
+./bitwarden.sh install
+```
+
+#### Configure your environment by adjusting settings in `./bwdata/env/global.override.env`.
+
+```properties
+globalSettings__mail__replyToEmail=email@example.com
+globalSettings__mail__smtp__host=smtp.qq.com
+globalSettings__mail__smtp__port=465
+globalSettings__mail__smtp__ssl=true
+globalSettings__mail__smtp__username=email@example.com
+globalSettings__mail__smtp__password=password
+
+globalSettings__disableUserRegistration=true # 禁止注册
+```
+
+>  修改完后执行`./bitwarden.sh restart`
+
+#### Start your instance
+
+`./bitwarden.sh start`
+
+#### backing up your server
+
+backup `bwdata` folder
+
+#### Client
+
+[https://bitwarden.com/download](https://bitwarden.com/download/)
