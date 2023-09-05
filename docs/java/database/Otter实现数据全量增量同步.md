@@ -1,12 +1,8 @@
 # Otter实现数据全量增量同步
 
-
-
 otter是一款基于数据库增量日志解析，准实时同步到本机房或异地机房的mysql/oracle数据库. 一个分布式数据库同步系统
 
 仓库地址：`https://github.com/alibaba/otter`
-
-
 
 ## 前置工作
 
@@ -18,7 +14,7 @@ otter是一款基于数据库增量日志解析，准实时同步到本机房或
 
 - 初始化otter数据库
 
-  - ```sql
+    - ```sql
     CREATE DATABASE /*!32312 IF NOT EXISTS*/ `otter` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_bin */;
     
     USE `otter`;
@@ -342,7 +338,8 @@ otter.communication.manager.port = 1099
 otter.zookeeper.cluster.default = 127.0.0.1:2181
 ```
 
-修改完关键配置后即可执行bin/startup.sh启动manager服务，webUI访问时默认是游客，admin密码默认为`admin`,otter没有提供权限控制，游客用户也能看到所有配置信息，因此不能暴露在公网。
+修改完关键配置后即可执行bin/startup.sh启动manager服务，webUI访问时默认是游客，admin密码默认为`admin`
+,otter没有提供权限控制，游客用户也能看到所有配置信息，因此不能暴露在公网。
 
 > 坑：startup.sh中的java启动参数-Xss（单个线程栈内存）值都设置的是256k,使用jdk1.8是无法启动的，需要调成大一点例如512k
 >
@@ -369,8 +366,6 @@ otter.zookeeper.cluster.default = 127.0.0.1:2181
 ## canal配置
 
 监听源库，开启tsdb监控表结构变化
-
-
 
 ## 配置Channel
 
@@ -401,10 +396,6 @@ select和load机器直接选node，同步数据来源的canal选择刚才配置�
 ## 启动channel
 
 启动channel即可测试源库源表的数据变更后，目标库的目标表是否跟着一起更新。
-
-
-
-
 
 ## 全量数据同步
 
@@ -482,11 +473,8 @@ INSERT INTO retl.xdual(id, x) VALUES (1,now()) ON DUPLICATE KEY UPDATE x = now()
 insert into retl.retl_buffer(ID,TABLE_ID, FULL_NAME,TYPE,PK_DATA,GMT_CREATE,GMT_MODIFIED) (select null,0,'$schema.table$','I',id,now(),now() from $schema.table$); 
 ```
 
-> 例如：insert into retl.retl_buffer(ID,TABLE_ID, FULL_NAME,TYPE,PK_DATA,GMT_CREATE,GMT_MODIFIED) (select null,0,'test.user','I',id,now(),now() from test.user); 
-
-
-
-
+> 例如：insert into retl.retl_buffer(ID,TABLE_ID, FULL_NAME,TYPE,PK_DATA,GMT_CREATE,GMT_MODIFIED) (select
+> null,0,'test.user','I',id,now(),now() from test.user);
 
 ### 方案2
 
@@ -510,18 +498,22 @@ insert into retl.retl_buffer(ID,TABLE_ID, FULL_NAME,TYPE,PK_DATA,GMT_CREATE,GMT_
 
 后续新建channel的操作和普通增量同步一样即可。
 
-
 ## 踩坑
 
 ### 更换zookeeper后manager webui无法访问
-更换zookeeper后，manager管理页面无法进入，报错内容类似`org.I0Itec.zkclient.exception.ZkNoNodeException: org.apache.zookeeper.KeeperException$NoNodeException: KeeperErrorCode = NoNode for /otter/channel/3/3/process`。原因是otter会在zookepper中存储一些节点信息，更换zookeeper后，需要复制节点数据，或者删除数据库中的channel、pipeline等表的数据内容
-或者访问 http://域名:端口/system_reduction.htm，点击一键修复即可。
+
+更换zookeeper后，manager管理页面无法进入，报错内容类似`org.I0Itec.zkclient.exception.ZkNoNodeException: org.apache.zookeeper.KeeperException$NoNodeException: KeeperErrorCode = NoNode for /otter/channel/3/3/process`
+。原因是otter会在zookepper中存储一些节点信息，更换zookeeper后，需要复制节点数据，或者删除数据库中的channel、pipeline等表的数据内容
+或者访问 `http://域名:端口/system_reduction.htm`，点击一键修复即可。
 
 ### canal指定的binlog被清除
+
 `show master logs`
 `show binlog events in 'binlog.000048' from 1226 limit 4;`
 更新canal中的位点配置重新启动
 
 ### 读取从库binlog
-- 低权限用户需要授权，否则无法读取binlog`GRANT SELECT, REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO 'xxx'@'%' IDENTIFIED BY '';`
+
+-
+低权限用户需要授权，否则无法读取binlog`GRANT SELECT, REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO 'xxx'@'%' IDENTIFIED BY '';`
 - 从库需要设置`log_slave_updates=1`，将主库binlog中的操作写入到从库的binlog中，默认是关闭的，虽然数据可以同步，但是从库binlog没有记录这些内容。

@@ -12,14 +12,14 @@ export default defineConfig({
     base: "/",
     head: head,
     themeConfig: {
-        // search: {
-        //     provider: 'algolia',
-        //     options: {
-        //         appId: '...',
-        //         apiKey: '...',
-        //         indexName: '...'
-        //     }
-        // },
+        search: {
+            provider: 'algolia',
+            options: {
+                appId: 'TPENR7QRGF',
+                apiKey: 'd9aad78323bfe2cbe216b0da54f9fd68',
+                indexName: 'storyxc'
+            }
+        },
         logo: { src: '/favicon.ico' },
         // https://vitepress.dev/reference/default-theme-config
         nav: navbar,
@@ -32,7 +32,7 @@ export default defineConfig({
             pattern: 'https://github.com/storyxc/document/edit/main/docs/:path',
         },
         footer: {
-            message: '<a href="http://beian.miit.gov.cn/" target="_blank">豫ICP备19046036号</a></span>',
+            message: '<a href="https://beian.miit.gov.cn/" target="_blank">豫ICP备19046036号</a></span>',
             copyright: 'Copyright © 2019-2023<span><a href="https://storyxc.com" target="_blank" style="font-weight:bold"> story</a>'
         }
     }
