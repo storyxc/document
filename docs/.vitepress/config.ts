@@ -8,7 +8,7 @@ export default defineConfig({
     title: "故事",
     description: "document",
     lastUpdated: true,
-    cleanUrls: true,
+    cleanUrls: false,
     base: "/",
     head: head,
     themeConfig: {
