@@ -2,6 +2,8 @@
 
 ## 基础模板
 
+> https://docs.docker.com/compose/compose-file/
+
 ```yml
 version: "3.8" # version是compose文件格式版本号 需要和Docker Engine对应 https://docs.docker.com/compose/compose-file/compose-file-v3/
 
@@ -20,6 +22,14 @@ services:
       - "6611:6611"
     links:                      #定义到另一个服务中的容器的网络链接,可以在此容器直接用服务名访问另一个容器，links也有服务之间的隐式依赖关系，因此也决定了服务启动的顺序。
       - service2
+    env_file:
+    	- ./a.env
+    	- ./b.env
+    devices:
+      - "/dev/ttyUSB0:/dev/ttyUSB0"
+      - "/dev/sda:/dev/xvda:rwm"
+    dns:
+     - 8.8.8.8
   service2:      
     build:                     #构建配置
     	context: .               #指定包含Dockerfile的目录或一个git仓库的url
