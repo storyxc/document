@@ -63,7 +63,7 @@ location /abc {
 
 #### 访问静态资源重定向问题
 
-当nginx监听的不是80端口是，访问文件夹且末尾不是`/`，则nginx会进行301永久重定向，此时会丢掉客户端访问时的端口号，可以通过以下配置解决，作用是将不以 `/` 结尾的目录 URL 重定向至以 `/` 结尾的目录 URL。使用 `-d` 判断 `$request_filename` 是否为一个目录，如果是，则使用 `rewrite` 指令进行重写。其中，`[^/]$` 表示匹配不以 `/` 结尾的 URL，即目录 URL，`$scheme://$http_host$uri/` 表示重定向目标 URL，其中使用了 `$scheme` 变量表示客户端请求所使用的协议（HTTP 或 HTTPS）、`$http_host` 变量表示客户端请求的 HOST 头部信息、`$uri` 变量表示客户端请求的 URI。
+当nginx监听的不是80端口时，访问文件夹且末尾不是`/`，则nginx会进行301永久重定向，此时会丢掉客户端访问时的端口号，可以通过以下配置解决，作用是将不以 `/` 结尾的目录 URL 重定向至以 `/` 结尾的目录 URL。使用 `-d` 判断 `$request_filename` 是否为一个目录，如果是，则使用 `rewrite` 指令进行重写。其中，`[^/]$` 表示匹配不以 `/` 结尾的 URL，即目录 URL，`$scheme://$http_host$uri/` 表示重定向目标 URL，其中使用了 `$scheme` 变量表示客户端请求所使用的协议（HTTP 或 HTTPS）、`$http_host` 变量表示客户端请求的 HOST 头部信息、`$uri` 变量表示客户端请求的 URI。
 
 ```nginx
 location / {
