@@ -192,7 +192,6 @@ export const sidebar: DefaultTheme.Sidebar = {
                 { text: "腾讯云服务器存在对外攻击行为的处理", link: "/linux/env/腾讯云服务器存在对外攻击行为的处理" },
                 { text: "Linux设置swap空间", link: "/linux/env/Linux设置swap空间" },
                 { text: "链接和别名(ln、alias)", link: "/linux/env/链接和别名(ln、alias)" },
-                { text: "nginx配置", link: "/linux/env/nginx配置" },
                 { text: "Linux访问权限控制之ACL", link: "/linux/env/Linux访问权限控制之ACL" },
                 {
                     text: "Linux私钥登陆提示server refused our key",
@@ -206,6 +205,7 @@ export const sidebar: DefaultTheme.Sidebar = {
             text: "应用",
             collapsed: false,
             items: [
+                { text: "nginx配置", link: "/linux/applications/nginx配置" },
                 { text: "canal部署", link: "/linux/applications/canal部署" },
                 { text: "Linux中使用selenium", link: "/linux/applications/Linux中使用selenium" },
                 { text: "screen的进阶用法", link: "/linux/applications/screen的进阶用法" },
