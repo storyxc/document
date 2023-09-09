@@ -617,3 +617,339 @@ backup `bwdata` folder
 #### Client
 
 [https://bitwarden.com/download](https://bitwarden.com/download/)
+
+### Hoppscotch
+
+> https://github.com/hoppscotch/hoppscotch
+
+#### docker-compose.yml
+
+```yaml
+version: '3.8'
+
+services:
+  hoppscotch:
+    container_name: hoppscotch
+    image: hoppscotch/hoppscotch
+    ports:
+      - "53000:3000"
+      - "53100:3100"
+      - "53170:3170"
+    env_file: .env
+    restart: unless-stopped
+    links:
+      - postgresql
+    depends_on:
+      - postgresql
+    networks:
+      - hoppscotch
+  postgresql:
+    container_name: postgresql
+    image: postgres
+    environment:
+      POSTGRES_DB: db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: passwd
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    networks:
+      - hoppscotch
+      
+volumes:
+  postgres_data:
+
+networks:
+  hoppscotch:
+```
+
+#### .env
+
+```properties
+#-----------------------Backend Config------------------------------#
+# Prisma Config
+DATABASE_URL=postgresql://user:passwd@postgresql:5432/db
+
+# Auth Tokens Config
+JWT_SECRET="xxx"
+TOKEN_SALT_COMPLEXITY=10
+MAGIC_LINK_TOKEN_VALIDITY= 3
+REFRESH_TOKEN_VALIDITY="604800000" # Default validity is 7 days (604800000 ms) in ms
+ACCESS_TOKEN_VALIDITY="86400000" # Default validity is 1 day (86400000 ms) in ms
+SESSION_SECRET='xxx'
+
+# Hoppscotch App Domain Config
+REDIRECT_URL="https://hoppscotch.example.com"
+WHITELISTED_ORIGINS="https://hoppscotch.example.com/backend,https://hoppscotch.example.com,https://hoppadmin.example.com"
+VITE_ALLOWED_AUTH_PROVIDERS=GITHUB
+
+# Google Auth Config
+#GOOGLE_CLIENT_ID="************************************************"
+#GOOGLE_CLIENT_SECRET="************************************************"
+#GOOGLE_CALLBACK_URL="http://hoppscotch.example.com:3170/v1/auth/google/callback"
+#GOOGLE_SCOPE="email,profilstoryxc
+
+# Github Auth Config
+GITHUB_CLIENT_ID="xxx"
+GITHUB_CLIENT_SECRET="xxx"
+GITHUB_CALLBACK_URL="https://hoppscotch.example.com/backend/v1/auth/github/callback"
+GITHUB_SCOPE="user:email"
+
+# Microsoft Auth Config
+#MICROSOFT_CLIENT_ID="************************************************"
+#MICROSOFT_CLIENT_SECRET="************************************************"
+#MICROSOFT_CALLBACK_URL="http://hoppscotch.example.com:3170/v1/auth/microsoft/callback"
+#MICROSOFT_SCOPE="user.read"
+#MICROSOFT_TENANT="common"
+
+# Mailer config
+MAILER_SMTP_URL="smtps://user@domain.com:passwd@smtp.domain.com"
+MAILER_ADDRESS_FROM="user@domain.com"
+
+# Rate Limit Config
+RATE_LIMIT_TTL=60 # In seconds
+RATE_LIMIT_MAX=100 # Max requests per IP
+
+
+#-----------------------Frontend Config------------------------------#
+
+
+# Base URLs
+VITE_BASE_URL=https://hoppscotch.example.com
+VITE_SHORTCODE_BASE_URL=https://hoppscotch.example.com
+VITE_ADMIN_URL=https://hoppadmin.example.com
+
+# Backend URLs
+VITE_BACKEND_GQL_URL=https://hoppscotch.example.com/backend/graphql
+VITE_BACKEND_WS_URL=wss://hoppscotch.example.com/backend/ws/graphql
+VITE_BACKEND_API_URL=https://hoppscotch.example.com/backend/v1
+
+# Terms Of Service And Privacy Policy Links (Optional)
+VITE_APP_TOS_LINK=https://docs.hoppscotch.io/support/terms
+VITE_APP_PRIVACY_POLICY_LINK=https://docs.hoppscotch.io/support/privacy
+```
+
+#### hoppscotch.example.com.conf
+
+```nginx
+server {
+    listen              443 ssl;
+    listen              [::]:443 ssl;
+    server_name         hoppscotch.example.com;
+
+    # SSL
+    ssl_certificate     /etc/nginx/ssl/hoppscotch.example.com.crt;
+    ssl_certificate_key /etc/nginx/ssl/hoppscotch.example.com.key;
+    ssl_session_timeout 5m;
+    #请按照以下协议配置
+    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;
+    #表示使用的加密套件的类型。
+    ssl_protocols TLSv1.1 TLSv1.2;
+
+    # security
+
+    # logging
+    access_log          /var/log/nginx/access.log combined buffer=512k flush=1m;
+    error_log           /var/log/nginx/error.log warn;
+
+    # additional config
+
+    location  /backend/ws/ {
+        proxy_pass http://127.0.0.1:53170/;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "Upgrade";
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+
+    location  /backend/ {
+        proxy_pass http://127.0.0.1:53170/;
+    }
+
+    location / {
+        proxy_pass http://127.0.0.1:53000/;
+    }
+}
+
+# HTTP redirect
+server {
+    listen      80;
+    listen      [::]:80;
+    server_name hoppscotch.example.com;
+    return      301 https://hoppscotch.example.com$request_uri;
+}
+```
+
+### kutt
+
+> > https://github.com/thedevs-network/kutt
+
+#### docker-compose.yml
+
+```yaml
+version: "3"
+
+services:
+  kutt:
+    image: kutt/kutt
+    depends_on:
+      - postgres
+      - redis
+    command: ["./wait-for-it.sh", "postgres:5432", "--", "npm", "start"]
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    environment:
+      DB_HOST: postgres
+      DB_NAME: kutt
+      DB_USER: user
+      DB_PASSWORD: passwd
+      REDIS_HOST: redis
+
+  redis:
+    image: redis:6.0-alpine
+    volumes:
+      - redis_data:/data
+
+  postgres:
+    image: postgres:12-alpine
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: passwd
+      POSTGRES_DB: kutt
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  redis_data:
+  postgres_data:
+```
+
+#### .env
+
+```properties
+# App port to run on
+PORT=3000
+
+# The name of the site where Kutt is hosted
+SITE_NAME=Kutt
+
+# The domain that this website is on
+DEFAULT_DOMAIN=kutt.domain.com
+
+# Generated link length
+LINK_LENGTH=5
+
+# Postgres database credential details
+DB_HOST=postgres
+DB_PORT=5432
+DB_NAME=postgres
+DB_USER=user
+DB_PASSWORD=passwd
+DB_SSL=false
+
+# Redis host and port
+REDIS_HOST=redis
+REDIS_PORT=6379
+REDIS_PASSWORD=
+REDIS_DB=
+
+# Disable registration
+DISALLOW_REGISTRATION=true
+
+# Disable anonymous link creation
+DISALLOW_ANONYMOUS_LINKS=true
+
+# The daily limit for each user
+USER_LIMIT_PER_DAY=50
+
+# Create a cooldown for non-logged in users in minutes
+# Set 0 to disable
+NON_USER_COOLDOWN=0
+
+# Max number of visits for each link to have detailed stats
+DEFAULT_MAX_STATS_PER_LINK=5000
+
+# Use HTTPS for links with custom domain
+CUSTOM_DOMAIN_USE_HTTPS=false
+
+# A passphrase to encrypt JWT. Use a long and secure key.
+JWT_SECRET=xxx
+
+# Admin emails so they can access admin actions on settings page
+# Comma seperated
+ADMIN_EMAILS=user@domain.com
+
+# Invisible reCaptcha secret key
+# Create one in https://www.google.com/recaptcha/intro/
+RECAPTCHA_SITE_KEY=
+RECAPTCHA_SECRET_KEY=
+
+# Google Cloud API to prevent from users from submitting malware URLs.
+# Get it from https://developers.google.com/safe-browsing/v4/get-started
+GOOGLE_SAFE_BROWSING_KEY=
+
+# Your email host details to use to send verification emails.
+# More info on http://nodemailer.com/
+# Mail from example "Kutt <support@kutt.it>". Leave empty to use MAIL_USER
+MAIL_HOST=smtp.domain.com
+MAIL_PORT=465
+MAIL_SECURE=true
+MAIL_USER=user@domain.com
+MAIL_FROM=user@domain.com
+MAIL_PASSWORD=passwd
+
+# The email address that will receive submitted reports.
+REPORT_EMAIL=
+
+# Support email to show on the app
+CONTACT_EMAIL=
+```
+
+#### kutt.domain.com.conf
+
+```nginx
+server {
+    listen              443 ssl;
+    listen              [::]:443 ssl;
+    server_name         kutt.domain.com;
+
+    # SSL
+    ssl_certificate     /etc/nginx/ssl/kutt.domain.com.crt;
+    ssl_certificate_key /etc/nginx/ssl/kutt.domain.com.key;
+    ssl_session_timeout 5m;
+    #请按照以下协议配置
+    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;
+    #表示使用的加密套件的类型。
+    ssl_protocols TLSv1.1 TLSv1.2;
+
+    # security
+    include             nginxconfig.io/security.conf;
+
+    # logging
+    access_log          /var/log/nginx/access_kutt.log combined buffer=512k flush=1m;
+    error_log           /var/log/nginx/error_kutt.log warn;
+
+    # additional config
+    #include             nginxconfig.io/general.conf;
+    location / {
+        proxy_pass http://127.0.0.1:3000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+}
+
+
+# HTTP redirect
+server {
+    listen      80;
+    listen      [::]:80;
+    server_name .kutt.domain.com;
+    return      301 https://kutt.domain.com$request_uri;
+}
+```
+

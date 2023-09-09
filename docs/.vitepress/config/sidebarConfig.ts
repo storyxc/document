@@ -205,8 +205,8 @@ export const sidebar: DefaultTheme.Sidebar = {
             text: "应用",
             collapsed: false,
             items: [
-                { text: "nginx配置", link: "/linux/applications/nginx配置" },
-                { text: "canal部署", link: "/linux/applications/canal部署" },
+                { text: "Nginx配置", link: "/linux/applications/Nginx配置" },
+                { text: "Canal部署", link: "/linux/applications/Canal部署" },
                 { text: "Linux中使用selenium", link: "/linux/applications/Linux中使用selenium" },
                 { text: "screen的进阶用法", link: "/linux/applications/screen的进阶用法" },
                 { text: "iptables", link: "/linux/applications/iptables" },
