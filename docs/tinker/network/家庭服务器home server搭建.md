@@ -435,15 +435,35 @@ docker run -d --name kafkaui -p 9000:9000 \
     obsidiandynamics/kafdrop
 ```
 
+### cadvisor Docker监控
+
+```yaml
+version: '3'
+
+services:
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.47.2
+    container_name: cadvisor
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    ports:
+      - "28080:8080"
+    privileged: true
+    restart: unless-stopped
+    devices:
+      - /dev/kmsg
+```
+
 ### grafana+prometheus+node_exporter监控linux系统
 
 #### node_exporter
 
-- wget https://github.com/prometheus/node_exporter/releases/download/v1.5.0/node_exporter-1.5.0.linux-amd64.tar.gz
-
-- tar -xvf node_exporter-1.5.0.linux-amd64.tar.gz -C /usr/local/
-
-- mv /usr/local/node_exporter/node_exporter /usr/local/bin
+- `wget https://github.com/prometheus/node_exporter/releases/download/v1.5.0/node_exporter-1.5.0.linux-amd64.tar.gz`
+- `tar -xvf node_exporter-1.5.0.linux-amd64.tar.gz && mv node_exporter-1.5.0.linux-amd64/node_exporter /usr/local/bin`
 
 ```shell
   
@@ -462,14 +482,12 @@ EOF
 
 # 更新内核并启动，自启动
 systemctl daemon-reload && systemctl start node_exporter && systemctl enable node_exporter && systemctl status node_exporter
-
 ```
 
 #### redis_exporter
 
-- wget https://github.com/oliver006/redis_exporter/releases/download/v1.46.0/redis_exporter-v1.46.0.linux-amd64.tar.gz
-- tar -xvf redis_exporter-v1.46.0.linux-amd64.tar.gz
-- mv redis_exporter-v1.46.0.linux-amd64/redis_exporter /usr/local/bin
+- `wget https://github.com/oliver006/redis_exporter/releases/download/v1.46.0/redis_exporter-v1.46.0.linux-amd64.tar.gz`
+- `tar -xvf redis_exporter-v1.46.0.linux-amd64.tar.gz && mv redis_exporter-v1.46.0.linux-amd64/redis_exporter /usr/local/bin`
 
 ```shell
 # 编写systemd服务
@@ -491,10 +509,12 @@ systemctl daemon-reload && systemctl start redis_exporter && systemctl enable re
 
 #### grafana+prometheus
 
-docker-compose.yml
+
 
 ```yml
-version: "3.8"
+# docker-compose.yml
+
+version: "3"
 
 
 services:
@@ -506,7 +526,10 @@ services:
       - 3000:3000
     user: root
     volumes:
-      - /root/monitor/grafana/conf:/etc/grafana/
+      - /mnt/data/docker/monitor/grafana/conf/grafana.ini:/etc/grafana/grafana.ini
+      - /mnt/data/docker/monitor/grafana/data:/var/lib/grafana
+      - /mnt/data/docker/monitor/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+      - /mnt/data/docker/monitor/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
     environment:
       - TZ=Asia/shanghai
   prometheus:
@@ -516,9 +539,13 @@ services:
     ports:
       - 9090:9090
     volumes:
-      - /root/monitor/prometheus:/etc/prometheus
+      - /mnt/data/docker/monitor/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
     environment:
       - TZ=Asia/shanghai
+
+volumes:
+  prometheus_data:
 ```
 
 prometheus.yml
@@ -534,17 +561,35 @@ scrape_configs:
     scrape_interval: 5s
     static_configs:
       - targets: ["192.168.2.66:9100"]
+        labels:
+          instance: home-server-ubuntu
+  - job_name: "redis"
+    scrape_interval: 5s
+    static_configs:
+      - targets: ["192.168.2.66:9121"]
+        labels:
+          instance: home-server-ubuntu
+  - job_name: "cadvisor"
+    static_configs:
+      - targets: ["192.168.2.66:28080"]
+        labels:
+          instance: home-server-ubuntu
 ```
 
-grafana.ini 从空白容器里复制出一份
+- grafana.ini 从空白容器里复制出一份
 
 ```ini
 docker cp grafana:/etc/grafana.ini ~/
 ```
 
-grafana监控大盘模板
+- grafana监控大盘模板
 
-`https://grafana.com/api/dashboards/12633/revisions/1/download`
+  - [12633](https://grafana.com/grafana/dashboards/12633-linux/)(Linux主机详情)
+
+  - [1860](https://grafana.com/grafana/dashboards/1860-node-exporter-full/)(Node Exporter Full)
+  - [193](https://grafana.com/grafana/dashboards/193-docker-monitoring/)(Docker monitoring)
+  - [14282](https://grafana.com/grafana/dashboards/14282-cadvisor-exporter/)(Cadvisor exporter)
+  - [11835](https://grafana.com/grafana/dashboards/11835-redis-dashboard-for-prometheus-redis-exporter-helm-stable-redis-ha/)(Redis Dashboard)
 
 ### Bitwarden
 

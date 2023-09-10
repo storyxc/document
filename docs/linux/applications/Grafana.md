@@ -24,3 +24,24 @@ count_over_time({job="wechat"} |= `订单申请退款失败` | pattern `<_> orde
 {{ end }}
 ```
 > https://community.grafana.com/t/how-to-use-alert-message-templates-in-grafana/67537/3
+
+## 匿名访问
+
+- 首先在Administration中创建新的组织`Guest`
+- 修改配置文件
+
+```ini
+# grafana.ini
+
+[auth.anonymous]
+# enable anonymous access
+enabled = true
+# specify organization name that should be used for unauthenticated users
+org_name = Guest
+# specify role for unauthenticated users
+org_role = Viewer
+
+# mask the Grafana version number for unauthenticated users
+hide_version = true
+```
+

@@ -2,7 +2,7 @@
 
 ## 基础模板
 
-> https://docs.docker.com/compose/compose-file/
+> https://docs.docker.com/compose/compose-file/03-compose-file/
 
 ```yml
 version: "3.8" # version是compose文件格式版本号 需要和Docker Engine对应 https://docs.docker.com/compose/compose-file/compose-file-v3/
@@ -20,6 +20,7 @@ services:
     ports:                     #端口映射配置
       - "6610:6610"
       - "6611:6611"
+    privileged: true # 将服务容器配置为以提升的权限运行
     links:                      #定义到另一个服务中的容器的网络链接,可以在此容器直接用服务名访问另一个容器，links也有服务之间的隐式依赖关系，因此也决定了服务启动的顺序。
       - service2
     env_file:
