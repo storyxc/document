@@ -182,14 +182,12 @@ export const sidebar: DefaultTheme.Sidebar = {
                 { text: "从零搭建Linux虚拟机环境", link: "/linux/env/从零搭建Linux虚拟机环境" },
                 { text: "Centos7安装Python3环境", link: "/linux/env/Centos7安装Python3环境" },
                 { text: "bash常用的快捷键", link: "/linux/env/bash常用的快捷键" },
-                { text: "阿里云服务器挂载阿里云盘", link: "/linux/env/阿里云服务器挂载阿里云盘" },
                 { text: "centos7防火墙命令", link: "/linux/env/centos7防火墙命令" },
                 {
                     text: "阿里云服务器启用密钥登录并禁用密码登录",
                     link: "/linux/env/阿里云服务器启用密钥登录并禁用密码登录"
                 },
                 { text: "Linux服务器文件目录共享映射配置", link: "/linux/env/Linux服务器文件目录共享映射配置" },
-                { text: "腾讯云服务器存在对外攻击行为的处理", link: "/linux/env/腾讯云服务器存在对外攻击行为的处理" },
                 { text: "Linux设置swap空间", link: "/linux/env/Linux设置swap空间" },
                 { text: "链接和别名(ln、alias)", link: "/linux/env/链接和别名(ln、alias)" },
                 { text: "Linux访问权限控制之ACL", link: "/linux/env/Linux访问权限控制之ACL" },
