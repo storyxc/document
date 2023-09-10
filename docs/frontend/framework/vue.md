@@ -51,21 +51,21 @@ ViewModel把Model和View连接在一起，同时监听DOM变化和数据源的�
 ### 内容渲染
 
 - v-test
-  - `<p v-test=username></p>`：把username值渲染到p标签中
-  - `<p v-test=gender>性别</p>`:把gender值渲染到p标签中，原有的值会被覆盖
+    - `<p v-test=username></p>`：把username值渲染到p标签中
+    - `<p v-test=gender>性别</p>`:把gender值渲染到p标签中，原有的值会被覆盖
 - {{ }}
-  - 插值表达式(Mustache),专门用来解决v-text会覆盖默认文本内容的问题，不能用在属性上
-  - `<p>性别 {{ gender }}</p>`
-  - 支持javascript表达式
+    - 插值表达式(Mustache),专门用来解决v-text会覆盖默认文本内容的问题，不能用在属性上
+    - `<p>性别 {{ gender }}</p>`
+    - 支持javascript表达式
 - v-html
-  - 把包含HTML标签的字符串渲染为页面的HTML元素
+    - 把包含HTML标签的字符串渲染为页面的HTML元素
 
 ### 属性绑定
 
 - v-bind：单向绑定
-  - `v-bind:属性名`
-  - 简写为`:属性名`
-  - 支持javascript表达式
+    - `v-bind:属性名`
+    - 简写为`:属性名`
+    - 支持javascript表达式
 
 ### 事件绑定
 
@@ -96,37 +96,37 @@ ViewModel把Model和View连接在一起，同时监听DOM变化和数据源的�
 
 - 事件修饰符
 
-  - `@click.prevent=show()`：绑定事件并阻止默认行为
-  - stop：阻止事件冒泡
-  - capture：以捕获模式触发当前事件处理函数
-  - once：绑定事件只触发一次
-  - self：只有在even.target时当前元素自身时触发事件处理函数
+    - `@click.prevent=show()`：绑定事件并阻止默认行为
+    - stop：阻止事件冒泡
+    - capture：以捕获模式触发当前事件处理函数
+    - once：绑定事件只触发一次
+    - self：只有在even.target时当前元素自身时触发事件处理函数
 
 - 按键修饰符
 
-  - 判断详细的案件
-    - @keyup.enter=submit
-    - esc
+    - 判断详细的案件
+        - @keyup.enter=submit
+        - esc
 
 ### 双向绑定
 
 - v-model：不操作DOM情况下，快速获取表单数据
 - 修饰符
-  - .nubmer：自动将输入转为数值
-  - .trim：自动过滤输入的首尾空白字符
-  - .lazy：在change时更新，input时不更新
+    - .nubmer：自动将输入转为数值
+    - .trim：自动过滤输入的首尾空白字符
+    - .lazy：在change时更新，input时不更新
 
 ### 条件渲染
 
 控制DOM的显示与隐藏
 
 - v-if
-  - 通过添加、移除元素实现
-  - 如果刚进入页面不需要被展示，而且后期可能也不需要展示此时v-if性能更好
-  - 配套指令：v-else、v-else-if
+    - 通过添加、移除元素实现
+    - 如果刚进入页面不需要被展示，而且后期可能也不需要展示此时v-if性能更好
+    - 配套指令：v-else、v-else-if
 - v-show
-  - display控制元素显示、隐藏
-  - 如果频繁切换显示状态用v-show更好
+    - display控制元素显示、隐藏
+    - 如果频繁切换显示状态用v-show更好
 
 ### 列表渲染
 
@@ -134,7 +134,7 @@ ViewModel把Model和View连接在一起，同时监听DOM变化和数据源的�
 
 基于一个数组来循环渲染一个列表结构。v-for指令需要用item in items形式的特殊语法
 
-```html
+```vue
 <li v-for="item in items">姓名是： {{ item.name }}</li>
 
 <li v-for="(item,index) in items">姓名是： {{ item.name }}</li>
@@ -154,9 +154,9 @@ ViewModel把Model和View连接在一起，同时监听DOM变化和数据源的�
 
 完整语法
 
-```html
-<li v-for="(value, key, index) in myObject"> 
-{{ value }} {{ kye }} {{ index }}
+```vue
+<li v-for="(value, key, index) in myObject">
+    {{ value }} {{ kye }} {{ index }}
 </li>
 ```
 
@@ -167,7 +167,7 @@ ViewModel把Model和View连接在一起，同时监听DOM变化和数据源的�
 - `<p> {{ message | capitalize }}</p>`：调用captitalize过滤器，对message进行格式化
 - `<div v-bind:id="rawId | formatId"></div`：调用formatId过滤器，对rawId进行格式化
 
-```js
+```vue
 filters: {
   capitalize(val) {
     return val.charAt(0).toUppercase() + var.slice(1)
@@ -182,7 +182,7 @@ filters: {
 
 #### 连续调用&传参
 
-```js
+```vue
 {{ msg | filterA | filterB(arg1, arg2)}}
 ```
 
@@ -195,40 +195,41 @@ watch侦听器语序开发者监视数据的变化，从而针对数据的变化
 watch定义在vue实例的watch节点下
 
 - 方法格式的侦听器
-  
-  - ```js
-    watch: {
-      username(newVal, oldVal) {
-        console.log(newVal, oldVal)
-      }
-    }
-    ```
-  
-  - 缺点
-  
-    - 无法在刚进入页面时自动触发
-    - 如果侦听的是一个对象，对象属性发生变化不会触发侦听器
-  
+
+```vue
+watch: {
+username(newVal, oldVal) {
+  console.log(newVal, oldVal)
+}
+}
+```
+
+> - 缺点
+>
+>     - 无法在刚进入页面时自动触发
+>     - 如果侦听的是一个对象，对象属性发生变化不会触发侦听器
+
 - 对象格式的侦听器
-  - ```js
-    watch: {
-      username: {
-        handler(newVal, oldVal) {
-        console.log(newVal, oldVal)
-      },
-      immediate: true,
-      deep: true,
-      'info.age'(newVal) {
-        console.log(newVal)
-      }
-    }
-    ```
 
-  - 可以通过**immediate**选项让侦听器立即触发
+```vue
+watch: {
+username: {
+  handler(newVal, oldVal) {
+  console.log(newVal, oldVal)
+},
+immediate: true,
+deep: true,
+'info.age'(newVal) {
+  console.log(newVal)
+}
+}
+```
 
-  - 可以通过`deep`选项开启深度监听，可以监听到对象的任何一个属性变化
-
-  - 如果要侦听的是对象的子属性变化，则必须包裹一层单引号
+> - 可以通过**immediate**选项让侦听器立即触发
+>
+> - 可以通过`deep`选项开启深度监听，可以监听到对象的任何一个属性变化
+>
+> - 如果要侦听的是对象的子属性变化，则必须包裹一层单引号
 
 ## 计算属性
 
@@ -236,32 +237,36 @@ watch定义在vue实例的watch节点下
 
 计算属性放在vue实例的`computed`节点中
 
-```js
+```vue
 var vm = new Vue({
-  el: '#app',
-  data: {
-    r: 0, g: 0, b: 0
-  },
-  computed: {
-    //计算属性rgb
-    rgb() { return `rgb(${this.r}, ${this.g}, ${this.b})`}
-    //计算属性 allChecked
-    allChecked: {
-    	get() {
-      	return this.goodsList.every(item => item.goods_state)
-    	},
-    	set(newVal) {
-      	this.goodsList.forEach(item => item.goods_state = newVal)
-    	}
-		}
-  },
-  methods: {
-    show() { console.log(this.rgb) }
-  }
+    el: '#app',
+    data: {
+        r: 0, g: 0, b: 0
+    },
+    computed: {
+        //计算属性rgb
+        rgb() {
+            return `rgb(${this.r}, ${this.g}, ${this.b})`
+        }
+        //计算属性 allChecked
+        allChecked: {
+            get() {
+                return this.goodsList.every(item => item.goods_state)
+            },
+            set(newVal) {
+                this.goodsList.forEach(item => item.goods_state = newVal)
+            }
+        }
+    },
+    methods: {
+        show() {
+            console.log(this.rgb)
+        }
+    }
 })
 ```
 
-```js
+```vue
 computed: {
   allChecked: {
     get() {
@@ -274,11 +279,7 @@ computed: {
 }
 ```
 
-
-
 ## axios
-
-> axios一个专注于网络请求的库
 
 基本语法：
 
@@ -326,7 +327,7 @@ document.querySelector('#btn').addEventListener('click', async function(){
 ```js
 // main.js
 
-import Vue from 'vue'
+import Vue from 'docs/frontend/framework/vue'
 import App from './App.vue'
 import axios from 'axios'
 
@@ -338,7 +339,7 @@ Vue.config.productionTip = false
 // Vue.prototype.$http = axios
 
 new Vue({
-  reder: h => h(App)
+    reder: h => h(App)
 }).$mount(#app)
 ```
 
@@ -367,7 +368,7 @@ vue-cli是Vue.js开发的标准工具。简化了基于webpack创建工程化的
 ```vue
 <!--template是一个虚拟标签，只起到包裹作用，不会被渲染成任何实质性HTML-->
 <template>
-	<div>
+  <div>
     <!--template中只能有一个根元素-->
   </div>
 </template>
@@ -377,25 +378,25 @@ vue-cli是Vue.js开发的标准工具。简化了基于webpack创建工程化的
 
 ```vue
 <script>
-export default {
-  name: 'xxx',// <keep-alive>实现组件缓存功能，调整工具中看到的标签名称
-  // data必须是一个函数
-  data() {
-    return {
-      xx: xx
-    }
-  },
-  methods: {
-    fun() {
-      // 组件中的this代表当前组件的实例对象
-      console.log(this)
-      this.xx = yy
-    }
-  },
-  watch: {},
-  computed: {}
-  ...
-}
+  export default {
+    name: 'xxx',// <keep-alive>实现组件缓存功能，调整工具中看到的标签名称
+    // data必须是一个函数
+    data() {
+      return {
+        xx: xx
+      }
+    },
+    methods: {
+      fun() {
+        // 组件中的this代表当前组件的实例对象
+        console.log(this)
+        this.xx = yy
+      }
+    },
+    watch: {},
+    computed: {}
+    ...
+  }
 </script>
 ```
 
@@ -419,13 +420,13 @@ export default {
 
 1. import语法导入需要的组件
 
-```js
+```vue
 import A from '@/components/A.vue
 ```
 
 2. 使用components节点注册组件
 
-```js
+```vue
 export default {
 	components: {
 		A //注册名称主要用于 以标签形式把注册的组件 渲染和使用到页面结构之中
@@ -443,7 +444,7 @@ export default {
 
 #### 注册全局组件
 
-```js
+```vue
 // main.js
 
 import Test from '@/components/Test.vue'
@@ -460,20 +461,20 @@ props是组件的**自定义属性**，在封装通用组件的时候，合理�
 
 ```vue
 <script>
-export default {
-  props: {
-    initCount: {
-      default: 0,//默认值
-      type: Number, //规定属性的值类型，如果传递的值不符合，则会报错
-      required: true //必填项
-    }
-  },
-  data() {
-    return {
-      count: this.initCount
+  export default {
+    props: {
+      initCount: {
+        default: 0,//默认值
+        type: Number, //规定属性的值类型，如果传递的值不符合，则会报错
+        required: true //必填项
+      }
+    },
+    data() {
+      return {
+        count: this.initCount
+      }
     }
   }
-}
 </script>
 ```
 
@@ -545,28 +546,30 @@ methods: {
 
 #### 兄弟组件之间数据共享需要使用EventBus
 
-```js
+```vue
 //A组件
 import bus from './eventBus.js'
 
 methods: {
-	sendMsg() {
-		bus.$emit('share', this.msg)
-	}
+    sendMsg()
+    {
+        bus.$emit('share', this.msg)
+    }
 }
 
 //eventBus.js
-import Vue from 'vue'
+import Vue from 'docs/frontend/framework/vue'
 
 export default new Vue()
 
 //兄弟组件B
 import bus from './eventBus.js'
 
-created() {
-	bus.$on('share', val => {
-		this.msgFromSibling = val
-	})
+created()
+{
+    bus.$on('share', val => {
+        this.msgFromSibling = val
+    })
 }
 ```
 
@@ -595,11 +598,9 @@ this.$refs.compSon.方法
 this.$refs.compSon.属性
 ```
 
-#### $nextTick(callback)
+#### nextTick(callback)
 
-组件的$nextTick(callback)方法，会把callback函数会推迟到下一个DOM更新之后执行。
-
-
+组件的`$nextTick(callback)`方法，会把callback函数会推迟到下一个DOM更新之后执行。
 
 ## 动态组件
 
@@ -609,22 +610,23 @@ this.$refs.compSon.属性
 
 ```vue
 <template>
-	<component :is="componentName"></component>
+  <component :is="componentName"></component>
 </template>
 <script>
-import Left from '@/components/Left.vue'  
-import Right from '@/components/Right.vue'
-export default {
-  data() {
-    return {
-      componentName: "Left"
+  import Left from '@/components/Left.vue'
+  import Right from '@/components/Right.vue'
+
+  export default {
+    data() {
+      return {
+        componentName: "Left"
+      }
+    },
+    components: {
+      Left,
+      Right
     }
-  },
-  components: {
-    Left,
-    Right
   }
-}
 </script>
 ```
 
@@ -634,7 +636,7 @@ export default {
 
 ```vue
 <template>
-	<keep-alive>
+  <keep-alive>
     <component :is="componentName"></component>
   </keep-alive>
 </template>
@@ -654,7 +656,7 @@ export default {
 
 ```vue
 <template>
-	<keep-alive include="Left">
+  <keep-alive include="Left">
     <component :is="componentName"></component>
   </keep-alive>
 </template>
@@ -667,7 +669,7 @@ export default {
 ```vue
 <!--Left.vue-->
 <template>
-	<slot name="default">
+  <slot name="default">
     这里可以指定默认内容，会被覆盖
   </slot>
 </template>
@@ -677,33 +679,33 @@ export default {
 
 ```vue
 <template>
-	<Left>
+  <Left>
     <!--此区域必须在组件中声明插槽才会渲染-->
     <!--默认情况下 会被填充到名为default的插槽内-->
     <p>
       自定义内容
-  </p>
+    </p>
   </Left>
 </template>
 
 ---
 <template>
-	<Left>
-		<template v-slot:default> 
+  <Left>
+    <template v-slot:default>
       <p>
-      自定义内容
-  		</p>
-		</template>
+        自定义内容
+      </p>
+    </template>
   </Left>
 </template>
 ---
 <template>
-	<Left>
-		<template #default> 
+  <Left>
+    <template #default>
       <p>
-      自定义内容
-  		</p>
-		</template>
+        自定义内容
+      </p>
+    </template>
   </Left>
 </template>
 ```
@@ -716,36 +718,33 @@ export default {
 
 - 作用域插槽：封装组件时，为预留的slot提供属性对应的值
 
-  - ```html
-    定义：
-    <slot name="content" msg="hello world"></slot>
-    -- 
-    使用：
-    <template #content="scope">
-    	<p>
-        {{ scope.msg }}
-      </p>
-    </template>
-    ```
+```vue
+定义：
+<slot name="content" msg="hello world"></slot>
+-- 
+使用：
+<template #content="scope">
+	<p>
+    {{ scope.msg }}
+  </p>
+</template>
 
-  - 作用域插槽解构赋值
+- 作用域插槽解构赋值
 
     - ```html
-      <slot name="content" msg="hello world" :user="user"></slot>
-      
-      ---
-      
-      <template #content="{msg, user}">
-      	<p>
-          {{msg}}
-        </p>
-        <p>
-          {{user}}
-        </p>
-      </template>
-      ```
-
-    - 
+  <slot name="content" msg="hello world" :user="user"></slot>
+  
+  ---
+  
+  <template #content="{msg, user}">
+  	<p>
+      {{msg}}
+    </p>
+    <p>
+      {{user}}
+    </p>
+  </template>
+```
 
 ### v-slot
 
@@ -765,7 +764,7 @@ export default {
 - 形参el:绑定了此指令的原生的DOM对象
 - 形参binding：传递过来的参数是binding中的value
 
-```js
+```vue
 directives: {
   color: {
     bind(el, binding) {
@@ -781,7 +780,7 @@ directives: {
 
 - 在DOM更新的时候就会触发update函数
 
-```js
+```vue
 directives: {
   color: {
     update(el, binding) {
@@ -795,7 +794,7 @@ directives: {
 
 如果bind和update函数的逻辑完全相同，则对象格式的自定义指令可以简写为
 
-```js
+```vue
 directives: {
   color(el, binding) {
     el.style.color = binding.value
@@ -807,19 +806,19 @@ directives: {
 
 使用`Vue.directive`声明
 
-```js
-Vue.directive('color', function(el, binding){
-  el.style.color = binding.value
+```vue
+Vue.directive('color', function (el, binding) {
+    el.style.color = binding.value
 })
 ---
-Vue.directive('color', {
-  binding(el, binding) {
-      el.style.color = binding.value
-  },
-  update(el, binding) {
-      el.style.color = binding.value
-  }
-})
+    Vue.directive('color', {
+        binding(el, binding) {
+            el.style.color = binding.value
+        },
+        update(el, binding) {
+            el.style.color = binding.value
+        }
+    })
 ```
 
 ## 路由（Router）
@@ -832,16 +831,16 @@ Vue.directive('color', {
 
   - publicPath/baseUrl
 
-    ```js
-    //vue.config.js
-    module.exports = {
-      publicPath: process.env.NODE_ENV === 'production'
-        ? '/production-sub-path/'
-        : '/'
-    }
-    ```
+  ```vue
+  //vue.config.js
+  module.exports = {
+    publicPath: process.env.NODE_ENV === 'production'
+      ? '/production-sub-path/'
+      : '/'
+  }
+  ```
 
-  -  createWebHistory(`base?`)
+  - createWebHistory(`base?`)
 
 ### 工作方式
 
@@ -860,8 +859,8 @@ Vue.directive('color', {
 
 在src目录下，新建`router/index.js`模块
 
-```js
-import Vue from 'vue'
+```vue
+import Vue from 'docs/frontend/framework/vue'
 import VueRouter from 'vue-router'
 
 // 调用Vue.use()函数，把VueRouter安装为Vue的插件
@@ -878,16 +877,18 @@ main.js中挂载路由模块
 
 ```js
 //main.js
-import ...
+import
+
+...
 //import router from '@/router/index.js'
 //简写
 import router from '@/router'
 
 new Vue({
-  render: h => h(App),
-  //router: router
-  //属性名 属性值一致 可以简写
-  router
+    render: h => h(App),
+    //router: router
+    //属性名 属性值一致 可以简写
+    router
 })
 ```
 
@@ -898,7 +899,7 @@ new Vue({
 
 ```vue
 <template>
-	<div class="container">
+  <div class="container">
     <a href="#/home">首页</a>
     <a href="#/movie">电影</a>
     <a href="#/about">关于</a>
@@ -907,7 +908,7 @@ new Vue({
     <router-link to="#/home">首页</router-link>
     <router-link to="#/movie">电影</router-link>
     <router-link to="#/about">关于</router-link>
-    
+
     <router-view></router-view>
   </div>
 </template>
@@ -915,8 +916,8 @@ new Vue({
 
 修改`router/index.js`
 
-```js
-import Vue from 'vue'
+```vue
+import Vue from 'docs/frontend/framework/vue'
 import VueRouter from 'vue-router'
 
 import Home from '@/components/Home.vue'
@@ -927,14 +928,14 @@ import About from '@/components/About.vue'
 Vue.use(VueRouter)
 
 const router = new VueRouter({
-  // routes是一个数组：定义hash地址和组件之间的对应关系
-  routes: [
-    // 路由规则
-    { path: '/', redirect: '/home' }, // 重定向
-    { path: '/home', component: Home },
-    { path: '/movie', component: Movie },
-    { path: '/about', component: About }
-  ]
+    // routes是一个数组：定义hash地址和组件之间的对应关系
+    routes: [
+        // 路由规则
+        {path: '/', redirect: '/home'}, // 重定向
+        {path: '/home', component: Home},
+        {path: '/movie', component: Movie},
+        {path: '/about', component: About}
+    ]
 })
 
 export default router
@@ -949,8 +950,8 @@ export default router
 
 #### 通过children属性声明子路由规则
 
-```js
-import Vue from 'vue'
+```vue
+import Vue from 'docs/frontend/framework/vue'
 import VueRouter from 'vue-router'
 
 import Home from '@/components/Home.vue'
@@ -963,27 +964,27 @@ import Tab2 from '@/components/tabs/Tab2.vue'
 Vue.use(VueRouter)
 
 const router = new VueRouter({
-  // routes是一个数组：定义hash地址和组件之间的对应关系
-  routes: [
-    // 路由规则
-    { path: '/', redirect: '/home' }, // 重定向
-    { path: '/home', component: Home },
-    { path: '/movie', component: Movie },
-    { 
-      path: '/about',
-      component: About,
-      children: [
-        { path: 'tab1', component: Tab1 },
-        { path: 'tab2', component: Tab2 }
-      ]
-    }
-  ]
+    // routes是一个数组：定义hash地址和组件之间的对应关系
+    routes: [
+        // 路由规则
+        {path: '/', redirect: '/home'}, // 重定向
+        {path: '/home', component: Home},
+        {path: '/movie', component: Movie},
+        {
+            path: '/about',
+            component: About,
+            children: [
+                {path: 'tab1', component: Tab1},
+                {path: 'tab2', component: Tab2}
+            ]
+        }
+    ]
 })
 
 export default router
 ```
 
-```js
+```vue
 const routes = [
   {
     path: '/',
@@ -1013,8 +1014,6 @@ const router = new VueRouter({
   }
 })
 ```
-
-
 
 ### 动态路由匹配
 
@@ -1061,7 +1060,7 @@ const router = new VueRouter({
 
 每次发生路由导航跳转时，都会触发前置守卫，在前置守卫中，可以对每个路由进行访问权限控制。
 
-```js
+```vue
 const router = new VueRouter({})
 // 每次路由跳转都会触发回调函数                              
 router.beforeEach((to, from, next) => {
@@ -1101,7 +1100,9 @@ crete-vue同样支持vue2：`npm create vue@2`  / `npm init vue@2`
 >
 > 1. 底层实现不同
 >
-> Vite使用ES modules（ESM）作为模块系统管理，而Webpack使用CommonJS来管理模块。这意味着，在使用Webpack打包项目时，所有模块都将被打包到一个或多个bundle.js文件中，而Vite将原始文件作为模块提取和处理，并将其以一种非常高效的方式提供给浏览器。
+> Vite使用ES
+>
+> modules（ESM）作为模块系统管理，而Webpack使用CommonJS来管理模块。这意味着，在使用Webpack打包项目时，所有模块都将被打包到一个或多个bundle.js文件中，而Vite将原始文件作为模块提取和处理，并将其以一种非常高效的方式提供给浏览器。
 >
 > 2. 开发环境下的性能
 >
@@ -1109,11 +1110,14 @@ crete-vue同样支持vue2：`npm create vue@2`  / `npm init vue@2`
 >
 > 3. 生产环境下的性能
 >
-> 在生产环境下，Webpack可以通过代码分割（Code Splitting）和 Tree Shaking来优化代码，减小打包后的文件大小。而Vite在生产环境下目前还不支持代码分割。因此，如果项目需要大量使用Code Splitting和Tree Shaking等技术，使用Webpack可能会更加合适。
+> 在生产环境下，Webpack可以通过代码分割（Code Splitting）和 Tree
+> Shaking来优化代码，减小打包后的文件大小。而Vite在生产环境下目前还不支持代码分割。因此，如果项目需要大量使用Code
+> Splitting和Tree Shaking等技术，使用Webpack可能会更加合适。
 >
 > 4. 生态和可定制性
 >
 > Webpack具有强大的社区和众多的插件和Loader来处理各种文件和场景，可以根据不同的需求进行高度的定制。而Vite的生态和可定制性方面要弱于Webpack，它的插件数量还比较少。
+>
 >
 > 总的来说，Vite是一种专门为现代浏览器设计的前端构建工具，它在开发环境下性能卓越，但在生产环境方面还有一些局限。而Webpack则是一种更加稳健和灵活的构建工具，它可以用于各种复杂的场景和需求，并且有着更强大的生态和定制能力，但需要进行更多的配置。选择使用哪种工具，应该根据具体项目需求和使用场景来进行选择。
 
@@ -1124,14 +1128,14 @@ crete-vue同样支持vue2：`npm create vue@2`  / `npm init vue@2`
 ### 构建一个vue实例
 
 ```js
-import { createApp } from 'vue'
+import {createApp} from 'docs/frontend/framework/vue'
 
 createApp({
-  data() {
-    return {
-      count: 0
+    data() {
+        return {
+            count: 0
+        }
     }
-  }
 }).mount('#app')
 ```
 
@@ -1147,34 +1151,32 @@ createApp({
 
   - 使用`reactive()`方法声明数据为响应式数据`const state = reactive({ count: 0 })`
 
-  - ```<script setup>```：顶层的导入和变量声明可在同一组件的模板中直接使用。可以理解为模板中的表达式和 `script setup`中的代码处在同一个作用域中。
+  - ```<script setup>```：顶层的导入和变量声明可在同一组件的模板中直接使用。可以理解为模板中的表达式和 `script setup`
+    中的代码处在同一个作用域中。
 
   - 使用`ref()`定义响应式变量,`ref()` 将传入参数的值包装为一个带 `.value` 属性的 ref 对象：
 
     ```js
-    import { ref } from 'vue'
+    import { ref } from 'docs/frontend/framework/vue'
     
     const count = ref(0)
     ```
 
-    和响应式对象的属性类似，ref 的 `.value` 属性也是响应式的。同时，当值为对象类型时，会用 `reactive()` 自动转换它的 `.value`。
+    和响应式对象的属性类似，ref 的 `.value` 属性也是响应式的。同时，当值为对象类型时，会用 `reactive()`
+    自动转换它的 `.value`。
 
     一个包含对象类型值的 ref 可以响应式地替换整个对象：
 
-    js
-
-    ```
+    ```js
     const objectRef = ref({ count: 0 })
     
     // 这是响应式的替换
     objectRef.value = { count: 1 }
     ```
 
-    
-
-  > 响应式
-  >
-  > https://cn.vuejs.org/guide/essentials/reactivity-fundamentals.html
+> 响应式
+>
+> https://cn.vuejs.org/guide/essentials/reactivity-fundamentals.html
 
 - 类和样式绑定
 
@@ -1188,9 +1190,10 @@ createApp({
 
     - ```typescript
       import type { Ref } from 'vue'
-      
       const count: Ref<number> = ref(0)
       ```
+
+    
 
   - **当 ref 在模板中作为顶层属性被访问时，它们会被自动“解包”，所以不需要使用 `.value`**。
 

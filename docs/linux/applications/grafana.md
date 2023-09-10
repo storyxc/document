@@ -1,7 +1,5 @@
 # Grafana
 
-
-
 ## 告警
 
 grafana的告警可以使用Go Template语法来读取内置的变量数据并输出到告警邮件中
@@ -23,6 +21,7 @@ count_over_time({job="wechat"} |= `订单申请退款失败` | pattern `<_> orde
 {{ end }}
 {{ end }}
 ```
+
 > https://community.grafana.com/t/how-to-use-alert-message-templates-in-grafana/67537/3
 
 ## 匿名访问
