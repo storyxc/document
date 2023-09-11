@@ -32,7 +32,7 @@
     auto-route: true
     auto-detect-interface: true
     dns-hijack:
-      - tcp://any:53 # DNS hijacking might result in a failure, if the system DNS is at a private IP address (since auto-route does not capture private network traffic).
+      - any:53 # DNS hijacking might result in a failure, if the system DNS is at a private IP address (since auto-route does not capture private network traffic).
   
   dns:
     enable: true
@@ -41,9 +41,13 @@
     default-nameserver:
       - 114.114.114.114
     nameserver:
-      - 114.114.114.114
-    fallback:
+      - 119.29.29.29
+      - 223.5.5.5
       - 8.8.8.8
+    fallback:
+      - https://dns.cloudflare.com/dns-query
+      - tls://dns.google:853
+      - https://1.1.1.1/dns-query
     enhanced-mode: fake-ip # fake-ip redir-host
     fake-ip-range: 198.18.0.1/16
     fake-ip-filter:
