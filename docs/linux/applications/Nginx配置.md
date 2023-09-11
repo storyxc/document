@@ -40,7 +40,7 @@ location ~ ^/(upload|html)/ {
 }
 ```
 
-### location和proxy_pass是否带`/`的影响
+#### location和proxy_pass是否带`/`的影响
 
 > https://github.com/xqin/nginx-proxypass-server-paths
 
@@ -97,10 +97,11 @@ location / {
 | 变量名                   | 作用                           |
 |------------------------|----------------------------|
 | $scheme                | 请求使用的协议 (http 或 https)      |
-| $host                  | 当前请求的主机名                 |
-| $request_uri           | 完整的请求 URI                  |
+| $host                  | 当前请求的主机名，不包括端口号。         |
+| $http_host | 完整的HTTP主机头，包括主机名和端口号。 |
+| $request_uri           | 完整的请求 URI,包括查询字符串          |
 | $uri                   | 当前请求的 URI (不包含请求参数)     |
-| $args                  | 当前请求的参数部分                |
+| $args                  | 当前请求的参数部分,不包括问号  |
 | $request_method        | 当前请求的方法 (GET、POST 等)    |
 | $remote_addr           | 客户端 IP 地址                  |
 | $server_addr           | 服务器 IP 地址                  |
@@ -109,7 +110,7 @@ location / {
 | $request_filename      | 当前请求的文件路径和名称            |
 | $document_root         | 当前请求的根目录                 |
 | $is_args               | 如果请求包含参数部分，值为 ?，否则为空字符串 |
-| $query_string          | 当前请求的查询字符串部分            |
+| $query_string          | 当前请求的查询字符串部分,包括问号（?）    |
 | $http_user_agent       | 客户端发送的 User-Agent 头部信息    |
 | $http_referer          | 客户端发送的 Referer 头部信息       |
 | $http_cookie           | 客户端发送的 Cookie 头部信息        |
@@ -120,3 +121,17 @@ location / {
 | $content_length        | 请求的内容长度                   |
 | $request_body          | 请求的主体内容                    |
 
+## proxy_set_header
+
+| 配置指令                                                     | 作用                                                         |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `proxy_set_header Host $host;`                               | 设置代理请求的主机头，通常用于传递客户端的原始主机头。`$http_host`传递包含端口号。 |
+| `proxy_set_header X-Real-IP $remote_addr;`                   | 设置代理请求的客户端真实IP地址，用于传递客户端的真实IP地址给后端服务器。 |
+| `proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;` | 用于将客户端的原始IP地址添加到`X-Forwarded-For`头中，以便后端服务器知道请求的真实来源。 |
+| `proxy_set_header X-Forwarded-Proto $scheme;`                | 设置代理请求的协议（HTTP或HTTPS），以便后端服务器知道请求的协议类型。 |
+| `proxy_set_header User-Agent $http_user_agent;`              | 传递客户端的User-Agent头，用于识别客户端的浏览器或应用程序。 |
+| `proxy_set_header Referer $http_referer;`                    | 传递客户端的Referer头，通常用于跟踪页面来源。                |
+| `proxy_set_header Cookie $http_cookie;`                      | 传递客户端的Cookie头，以便后端服务器可以访问客户端的Cookie数据。 |
+| `proxy_set_header Connection "";`                            | 清除代理请求的Connection头，通常用于避免代理干扰连接的管理。 |
+| `proxy_set_header Upgrade $http_upgrade;`                    | 用于处理WebSocket连接的Upgrade头，通常与WebSocket代理一起使用。 |
+| `proxy_set_header X-Frame-Options SAMEORIGIN;`               | 用于设置`X-Frame-Options`头，控制网页是否可以嵌套在其他网页中显示。 |
