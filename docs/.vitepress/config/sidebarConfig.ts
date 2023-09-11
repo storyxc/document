@@ -210,6 +210,8 @@ export const sidebar: DefaultTheme.Sidebar = {
                 { text: "iptables", link: "/linux/applications/iptables" },
                 { text: "FFmpeg相关", link: "/linux/applications/FFmpeg相关" },
                 { text: "Grafana", link: "/linux/applications/Grafana" },
+                { text: "Clash", link: "/linux/applications/Clash" },
+
             ],
         },
         {
