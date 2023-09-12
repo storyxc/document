@@ -6,6 +6,53 @@
 > upstream指令主要用于负载均衡，设置一系列的后端服务器
 ### server
 > server块的指令主要用于指定主机和端口
+#### listen
+
+监听的端口号
+
+- `default_server`：定义默认的 server 处理没有成功匹配 server_name 的请求，如果没有显式定义，则会选取第一个定义的server作为default_server。
+
+  - 显式定义：`listen 80 default_server`
+
+  - 隐式定义
+
+    ```nginx
+    http {
+        # 如果没有显式声明 default server 则第一个 server 会被隐式的设为 default server
+        server {
+            listen 80;
+            server_name _; # _ 并不是重点 __ 也可以 ___也可以
+            return 403; # 403 forbidden
+        }
+        
+        server {
+            listen 80;
+            server_name www.a.com;
+            ...
+        }
+    }
+    ```
+
+#### server_name
+
+- `server_name storyxc.com`：完整匹配
+
+- `server_name *.storyxc.com`：`*`开始的通配符匹配
+
+  - 特殊情况：`.storyxc.com`能同时匹配`storyxc.com`和`*.storyxc.com`
+
+  > A wildcard name may contain an asterisk only on the name’s start or end, and only on a dot border. The names “`www.*.example.org`” and “`w*.example.org`” are invalid. However, these names can be specified using regular expressions, for example, “`~^www\..+\.example\.org$`” and “`~^w.*\.example\.org$`”. An asterisk can match several name parts. The name “`*.example.org`” matches not only `www.example.org` but `www.sub.example.org` as well.
+  >
+  > A special wildcard name in the form “`.example.org`” can be used to match both the exact name “`example.org`” and the wildcard name “`*.example.org`”.
+
+- `server_name mail.* `：`*`结尾的通配符匹配
+
+- `server_name ~^(?<user>.+)\.storyxc\.com$`第一个匹配的正则表达式（按照配置文件中出现的顺序）
+
+- `server_name _`：通常使用`_`作为`default server`的server_name
+
+
+
 ### location
 > location块用于匹配网页位置
 #### 匹配规则
