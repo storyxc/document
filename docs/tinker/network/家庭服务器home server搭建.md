@@ -465,9 +465,10 @@ services:
 - `wget https://github.com/prometheus/node_exporter/releases/download/v1.6.1/node_exporter-1.6.1.linux-amd64.tar.gz`
 - `tar -zxvf node_exporter-1.6.1.linux-amd64.tar.gz && mv node_exporter-1.6.1.linux-amd64/node_exporter /usr/local/bin`
 
+##### systemd
+
 ```shell
-  
-# 编写systemd服务
+  # 编写systemd服务
 cat > /etc/systemd/system/node_exporter.service <<EOF
 [Unit]
 Description=node_exporeter
@@ -483,6 +484,35 @@ EOF
 # 更新内核并启动，自启动
 systemctl daemon-reload && systemctl start node_exporter && systemctl enable node_exporter && systemctl status node_exporter
 ```
+
+##### init.d
+
+```shell
+# openwrt要使用init.d
+# /etc/init.d/node_exporter
+#!/bin/sh /etc/rc.common
+
+START=99
+STOP=10
+
+start() {
+    echo "Starting Node Exporter..."
+    /usr/bin/node_exporter --web.listen-address=":9100" > /dev/null 2>&1 &
+}
+
+stop() {
+    echo "Stopping Node Exporter..."
+    killall node_exporter
+}
+
+restart() {
+    stop
+    sleep 1
+    start
+}
+```
+
+`/etc/init.d/node_exporter enable && /etc/init.d/node_exporter start `
 
 #### redis_exporter
 
