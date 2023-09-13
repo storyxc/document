@@ -197,6 +197,7 @@ export const sidebar: DefaultTheme.Sidebar = {
                 },
                 { text: "Ubuntu-server", link: "/linux/env/Ubuntu-server" },
                 { text: "ArchLinux安装", link: "/linux/env/ArchLinux安装" },
+                { text: "Linux常用指令", link: "/linux/env/Linux常用指令" },
             ],
         },
         {
