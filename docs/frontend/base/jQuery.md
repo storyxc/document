@@ -136,7 +136,7 @@ $(function () {
 
 #### 位置
 
-```text
+```txt
 
 - offset()：设置或返回被选元素相对于文档(document)的偏移坐标，跟父级没有关系
     - 有两个属性left、top
