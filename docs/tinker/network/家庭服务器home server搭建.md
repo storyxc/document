@@ -689,6 +689,12 @@ globalSettings__disableUserRegistration=true # 禁止注册
 
 backup `bwdata` folder
 
+#### migration
+
+> https://bitwarden.com/help/migration/
+>
+> 如果低版本迁移到高版本，覆盖bwdata后，先执行./bitwarden.sh update
+
 #### Client
 
 [https://bitwarden.com/download](https://bitwarden.com/download/)
@@ -858,7 +864,7 @@ server {
 
 ### kutt
 
-> > https://github.com/thedevs-network/kutt
+> https://github.com/thedevs-network/kutt
 
 #### docker-compose.yml
 
