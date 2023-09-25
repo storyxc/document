@@ -12,15 +12,39 @@
 
 ```ini
 [common]
+bind_addr = 0.0.0.0
 bind_port = 7000
+
+token = xxx
 ```
 
-在需要暴露到内网的机器A上部署 frpc，配置如下：
+```shell
+cat > /etc/systemd/system/frps.service <<EOF
+[Unit]
+Description=frps
+After=network.target
+[Service]
+Type=simple
+ExecStart=/usr/bin/frps -c /etc/frps/frps.ini
+Restart=on-failure
+[Install]
+WantedBy=multi-user.target
+EOF
+```
+
+- 在需要暴露到内网的机器A上部署 frpc，配置如下：
 
 ```ini
 [common]
 server_addr = x.x.x.x
 server_port = 7000
+token = xxx
+
+[ssh]
+type = tcp
+local_ip = 127.0.0.1
+local_port = 22
+remote_port = 6001
 
 [secret_ssh]
 type = stcp
@@ -30,12 +54,19 @@ local_ip = 127.0.0.1
 local_port = 22
 ```
 
-在需要访问内网的机器B上部署frpc，配置如下：
+在需要访问内网的机器上执行命令连接内网服务，例如用户为root
+
+`ssh -oPort=6001 root@x.x.x.x`
+
+
+
+- 在需要访问内网的机器B上部署frpc，配置如下：
 
 ```ini
 [common]
 server_addr = x.x.x.x
 server_port = 7000
+token = xxx
 
 [secret_ssh_visitor]
 type = stcp
