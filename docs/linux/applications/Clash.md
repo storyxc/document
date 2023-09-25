@@ -358,5 +358,5 @@
 ## 管理API
 
 - 获取代理信息：`curl -X GET http://127.0.0.1:9090/proxies --header 'Authorization: Bearer 123456'`
-- 获取指定代理信息：`curl -X GET http://127.0.0.1:9090/proxies/PROXY --header 'Authorization: Bearer 123456'`
-- 选择指定节点：`curl -X UT http://127.0.0.1:9090/proxies/PROXY --header 'Authorization: Bearer 123456' --header "Content-Type: application/json" -d '{"name": "代理节点名称"}'`
+- 获取指定代理信息：`curl -X GET http://127.0.0.1:9090/proxies/{proxyGroupName} --header 'Authorization: Bearer 123456'`
+- 代理组切换指定节点：`curl -X PUT http://127.0.0.1:9090/proxies/{proxyGroupName} --header 'Authorization: Bearer 123456' --header "Content-Type: application/json" -d '{"name": "代理节点名称"}'`
