@@ -27,6 +27,6 @@ yt-dlp -f bestaudio "https://www.youtube.com/watch?v=example" -o - | ffmpeg -i -
 ### yt-dlp下载最高质量视频&音频并合成一个视频
 
 ```shell
-yt-dlp -f bestvideo+bestaudio "https://www.youtube.com/watch?v=example" -o ~/Downloads/output.mp4
+yt-dlp -f bestvideo+bestaudio "https://www.youtube.com/watch?v=example" -o ~/Downloads/output.mp4 --recode-video mp4
 ```
 
