@@ -50,3 +50,16 @@
 
 ### 修改.zshrc配置
 `source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh`
+
+
+
+## powerlevel10k主题
+
+> https://github.com/romkatv/powerlevel10k
+
+```shell
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
+echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >>~/.zshrc
+
+p10k configure
+```

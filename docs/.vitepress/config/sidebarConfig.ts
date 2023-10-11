@@ -414,6 +414,8 @@ export const sidebar: DefaultTheme.Sidebar = {
           text: "iterm2配合oh-my-zsh配置个性主题终端",
           link: "/actions/tools/iterm2配合oh-my-zsh配置个性主题终端",
         },
+        { text: "powershell美化", link: "/actions/env/powershell美化" },
+        { text: "哪吒探针页面美化", link: "/actions/env/哪吒探针页面美化" },
         {
           text: "iterm2配置ssh快速连接",
           link: "/actions/tools/iterm2配置ssh快速连接",
@@ -469,8 +471,6 @@ export const sidebar: DefaultTheme.Sidebar = {
           text: "macos开机自动执行脚本",
           link: "/actions/env/macos开机自动执行脚本",
         },
-        { text: "powershell美化", link: "/actions/env/powershell美化" },
-        { text: "哪吒探针页面美化", link: "/actions/env/哪吒探针页面美化" },
       ],
     },
     {
