@@ -41,7 +41,45 @@ UUID=506ed1d0-bc35-4585-8496-1ff4de100982 /repo ext4 defaults 0 0
 # 第五项为DUMP选项 默认0 第六项为被fsck命令决定启动时被扫描的文件系统顺序 仓库盘可以填0不需要扫描，系统盘1，其他可2
 ```
 
+## 磁盘扩容
 
+```shell
+
+# 使用`parted /dev/sda`
+GNU Parted 3.4
+Using /dev/sda
+Welcome to GNU Parted! Type 'help' to view a list of commands.
+
+# `p`输出信息
+# 扩容前：
+(parted) p
+Model: ATA QEMU HARDDISK (scsi)
+Disk /dev/sda: 859GB
+Sector size (logical/physical): 512B/512B
+Partition Table: gpt
+Disk Flags:
+
+Number  Start   End     Size    File system  Name  Flags
+ 1      1049kB  2097kB  1049kB                     bios_grub
+ 2      2097kB  537GB   537GB   ext4
+
+# 使用`resizepart 2 -1`
+
+# 扩容后
+(parted) p
+Model: ATA QEMU HARDDISK (scsi)
+Disk /dev/sda: 859GB
+Sector size (logical/physical): 512B/512B
+Partition Table: gpt
+Disk Flags:
+
+Number  Start   End     Size    File system  Name  Flags
+ 1      1049kB  2097kB  1049kB                     bios_grub
+ 2      2097kB  859GB   859GB   ext4
+```
+
+> - `resizepart partition end`:end参数填分区结束扇区号，直接使用resizepart 2 -1可以自动扩展到可用空间的末尾
+> - 或者使用fdisk扩容，先删除再新增
 
 ## 硬盘分区4k对齐
 
