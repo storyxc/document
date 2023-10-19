@@ -283,8 +283,8 @@ export const sidebar: DefaultTheme.Sidebar = {
         { text: "bash常用的快捷键", link: "/linux/env/bash常用的快捷键" },
         { text: "centos7防火墙命令", link: "/linux/env/centos7防火墙命令" },
         {
-          text: "阿里云服务器启用密钥登录并禁用密码登录",
-          link: "/linux/env/阿里云服务器启用密钥登录并禁用密码登录",
+          text: "服务器启用ssh密钥登录并禁用密码登录",
+          link: "/linux/env/服务器启用ssh密钥登录并禁用密码登录",
         },
         {
           text: "Linux服务器文件目录共享映射配置",
