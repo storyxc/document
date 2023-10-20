@@ -532,6 +532,10 @@ export const sidebar: DefaultTheme.Sidebar = {
                     text: "山特ups配合nut实现断电安全关机",
                     link: "/tinker/network/山特ups配合nut实现断电安全关机",
                 },
+                {
+                    text: "ubuntu-server开启网络唤醒",
+                    link: "/tinker/network/ubuntu-server开启网络唤醒",
+                }
             ],
         },
     ],
