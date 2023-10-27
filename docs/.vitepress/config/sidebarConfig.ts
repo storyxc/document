@@ -472,6 +472,10 @@ export const sidebar: DefaultTheme.Sidebar = {
                     text: "macos开机自动执行脚本",
                     link: "/actions/env/macos开机自动执行脚本",
                 },
+                {
+                    text: "Windows开机启动WSL",
+                    link: "/actions/env/Windows开机启动WSL",
+                }
             ],
         },
         {
