@@ -12,11 +12,16 @@
 
 ### 分析
 
-1. PC上还有块4T的希捷酷鹰，再添3块4T紫盘组raid5阵列。机箱的盘位就至少需要4个以上，挑了一圈就乔思伯N1（5盘位）和万由的810A（8盘位）能看的过去，虽然万由盘位多但是价格比n1高了大几百，目前也用不到这么多盘位，因此机箱确定了n1，主板也要买itx版型。
+1.
+
+PC上还有块4T的希捷酷鹰，再添3块4T紫盘组raid5阵列。机箱的盘位就至少需要4个以上，挑了一圈就乔思伯N1（5盘位）和万由的810A（8盘位）能看的过去，虽然万由盘位多但是价格比n1高了大几百，目前也用不到这么多盘位，因此机箱确定了n1，主板也要买itx版型。
 
 2. 要跑的docker容器比较多，下载器服务、阿里云的webdav容器、直播录制程序容器等等。。。因此内存需要32G以上。
 
-3. 确定使用的系统是个比较复杂的过程，因为有过PVE虚拟机翻车的经历，这个服务器又主要承载了数据存储功能，所以要追求稳定，因此首先排除PVE和ESXi这些虚拟机系统，直接物理机装系统。然后我在虚拟机上装了最新版的Truenas scale体验了一下，这个系统是基于debian用python开发的，交互上倒没什么问题，但是因为是个纯nas系统，对主系统限制较多，自由度不高（不能直接装软件），因此也被pass，黑群晖这些就不说了，在我看来还不如truenas。一圈排除下来就只能直接装linux server了。去V2EX论坛问了老哥们的意见，推荐debian的很多，也有建议用最熟悉的系统的，最后我选择了后者，选了比较有把握的ubuntu server，正好ubuntu的22.04发行版刚出，就直接安排上了。
+3. 确定使用的系统是个比较复杂的过程，因为有过PVE虚拟机翻车的经历，这个服务器又主要承载了数据存储功能，所以要追求稳定，因此首先排除PVE和ESXi这些虚拟机系统，直接物理机装系统。然后我在虚拟机上装了最新版的Truenas
+   scale体验了一下，这个系统是基于debian用python开发的，交互上倒没什么问题，但是因为是个纯nas系统，对主系统限制较多，自由度不高（不能直接装软件），因此也被pass，黑群晖这些就不说了，在我看来还不如truenas。一圈排除下来就只能直接装linux
+   server了。去V2EX论坛问了老哥们的意见，推荐debian的很多，也有建议用最熟悉的系统的，最后我选择了后者，选了比较有把握的ubuntu
+   server，正好ubuntu的22.04发行版刚出，就直接安排上了。
 
 ## 硬件
 
@@ -36,8 +41,6 @@ cpu散热：超频3刀锋
 
 其中散热、固态是在公司的福利商城购买，cpu、机械硬盘、机箱、扩展卡在淘宝购买，主板、电源在京东购买，内存在咸鱼淘的。不算硬盘花费是2480，加上硬盘3755。
 
-
-
 组装完成后：
 
 - 灵魂走线，又不是不能用(doge）
@@ -52,8 +55,6 @@ cpu散热：超频3刀锋
 
 跟其他工业风机箱比起来，乔思伯n1这款颜值还是很不错的。
 
-
-
 ## 系统搭建
 
 ### 操作系统安装
@@ -62,10 +63,16 @@ ubuntu官网下载最新版的ubuntu-server-22.04，然后rufus刷写到U盘中�
 
 安装过程不再赘述，这里记录几个重点步骤：
 
-1. 在配置Ubuntu安装镜像这一步最好选择国内的企业/大学镜像站，不然后面安装可能会在下载时卡住。网易镜像源`http://mirrors.163.com/ubuntu/`，阿里云镜像源`https://mirrors.aliyun.com/ubuntu/`，清华源`https://mirrors.tuna.tsinghua.edu.cn/ubuntu/`
-2. 磁盘分区选择自定义，然后根据自己的情况进行分区，我的固态只分了`/`和`/boot`两个区，然后四块4T机械组了raid5。（ubuntu在建立阵列后会立刻进入重建过程，阵列中会有一个分区状态为`spare rebuilding`，其他分区为`active sync`。这个重建过程很久，我4块4T重建总共用了十几个小时，重建完成后阵列下所有分区都会变为`active sync`状态
+1.
 
-  ![image-20220501014554319](https://storyxc.com/images/blog/image-20220501014554319.png)
+在配置Ubuntu安装镜像这一步最好选择国内的企业/大学镜像站，不然后面安装可能会在下载时卡住。网易镜像源`http://mirrors.163.com/ubuntu/`，阿里云镜像源`https://mirrors.aliyun.com/ubuntu/`，清华源`https://mirrors.tuna.tsinghua.edu.cn/ubuntu/`
+
+2. 磁盘分区选择自定义，然后根据自己的情况进行分区，我的固态只分了`/`和`/boot`
+   两个区，然后四块4T机械组了raid5。（ubuntu在建立阵列后会立刻进入重建过程，阵列中会有一个分区状态为`spare rebuilding`
+   ，其他分区为`active sync`。这个重建过程很久，我4块4T重建总共用了十几个小时，重建完成后阵列下所有分区都会变为`active sync`
+   状态
+
+![image-20220501014554319](https://storyxc.com/images/blog/image-20220501014554319.png)
 
 ## 基础配置
 
@@ -85,7 +92,7 @@ ubuntu官网下载最新版的ubuntu-server-22.04，然后rufus刷写到U盘中�
 
 - 启用密钥登陆
 
-​		见另一篇博客 `阿里云服务器启用密钥登陆并禁用密码登陆`
+见另一篇博客 `阿里云服务器启用密钥登陆并禁用密码登陆`
 
 - 时区同步
 
@@ -128,41 +135,41 @@ valid users = story
 >
 > [temp]        #共享资源名称
 >
-> comment = Temporary file space  #简单的解释，内容无关紧要
+> comment = Temporary file space #简单的解释，内容无关紧要
 >
-> path = /tmp    #实际的共享目录
+> path = /tmp #实际的共享目录
 >
-> writable = yes  #设置为可写入
+> writable = yes #设置为可写入
 >
 > browseable = yes #可以被所有用户浏览到资源名称，
 >
-> guest ok = yes  #可以让用户随意登录
+> guest ok = yes #可以让用户随意登录
 >
-> public = yes           #允许匿名查看
+> public = yes #允许匿名查看
 >
-> valid users = 用户名   #设置访问用户
+> valid users = 用户名 #设置访问用户
 >
-> valid users = @组名   #设置访问组
+> valid users = @组名 #设置访问组
 >
-> readonly = yes      #只读
+> readonly = yes #只读
 >
-> readonly = no       #读写
+> readonly = no #读写
 >
-> hosts deny = 192.168.0.0    #表示禁止所有来自192.168.0.0/24 网段的IP 地址访问
+> hosts deny = 192.168.0.0 #表示禁止所有来自192.168.0.0/24 网段的IP 地址访问
 >
 > hosts allow = 192.168.0.24 #表示允许192.168.0.24 这个IP 地址访问
 >
-> 
+>
 >
 > [homes]为特殊共享目录，表示用户主目录。
 >
 > [printers]表示共享打印机。
 >
-> 
+>
 >
 > 原文链接：https://blog.csdn.net/l1593572468/article/details/121444812
 
-### Docker安装 
+### Docker安装
 
 ```shell
 # Uninstall old versions
@@ -377,6 +384,7 @@ cd /usr/lib/rabbitmq/bin
 ```
 
 ### gitea
+
 ```yaml
 version: "3"
 
@@ -408,7 +416,9 @@ services:
       - "6610:6610"
       - "6611:6611"
 ```
+
 #### gitea webhook allowed host list
+
 ```shell
 /var/lib/docker/volumes/gitea_gitea/_data/gitea/conf/app.ini
 
@@ -419,14 +429,17 @@ ALLOWED_HOST_LIST = 192.168.2.66
 
 #### gitea and jenkins webhook
 
-In Jenkins: on the job settings page set "Source Code Management" option to "Git", provide URL to your repo (http://gitea-url.your.org/username/repo.git), and in "Poll triggers" section check "Poll SCM" option with no schedule defined. This setup basically tells Jenkins to poll your Gitea repo only when requested via the webhook.
+In Jenkins: on the job settings page set "Source Code Management" option to "Git", provide URL to your
+repo (http://gitea-url.your.org/username/repo.git), and in "Poll triggers" section check "Poll SCM" option with no
+schedule defined. This setup basically tells Jenkins to poll your Gitea repo only when requested via the webhook.
 
-In Gitea: under repo -> Settings -> Webhooks, add new webhook, set the URL to http://jenkins_url.your.org/gitea-webhook/post, and clear the secret (leave it blank).
+In Gitea: under repo -> Settings -> Webhooks, add new webhook, set the URL
+to http://jenkins_url.your.org/gitea-webhook/post, and clear the secret (leave it blank).
 
 At this point clicking on "Test Delivery" button should produce a successful delivery attempt (green checkmark).
 
-
 ### kafdrop
+
 ```shell
 docker run -d --name kafkaui -p 9000:9000 \
     -e KAFKA_BROKERCONNECT="192.168.2.66:9092"\
@@ -539,8 +552,6 @@ systemctl daemon-reload && systemctl start redis_exporter && systemctl enable re
 
 #### grafana+prometheus
 
-
-
 ```yml
 # docker-compose.yml
 
@@ -590,18 +601,18 @@ scrape_configs:
   - job_name: "linux"
     scrape_interval: 5s
     static_configs:
-      - targets: ["192.168.2.66:9100"]
+      - targets: [ "192.168.2.66:9100" ]
         labels:
           instance: home-server-ubuntu
   - job_name: "redis"
     scrape_interval: 5s
     static_configs:
-      - targets: ["192.168.2.66:9121"]
+      - targets: [ "192.168.2.66:9121" ]
         labels:
           instance: home-server-ubuntu
   - job_name: "cadvisor"
     static_configs:
-      - targets: ["192.168.2.66:28080"]
+      - targets: [ "192.168.2.66:28080" ]
         labels:
           instance: home-server-ubuntu
 ```
@@ -614,12 +625,13 @@ docker cp grafana:/etc/grafana.ini ~/
 
 - grafana监控大盘模板
 
-  - [12633](https://grafana.com/grafana/dashboards/12633-linux/)(Linux主机详情)
+    - [12633](https://grafana.com/grafana/dashboards/12633-linux/)(Linux主机详情)
 
-  - [1860](https://grafana.com/grafana/dashboards/1860-node-exporter-full/)(Node Exporter Full)
-  - [193](https://grafana.com/grafana/dashboards/193-docker-monitoring/)(Docker monitoring)
-  - [14282](https://grafana.com/grafana/dashboards/14282-cadvisor-exporter/)(Cadvisor exporter)
-  - [11835](https://grafana.com/grafana/dashboards/11835-redis-dashboard-for-prometheus-redis-exporter-helm-stable-redis-ha/)(Redis Dashboard)
+    - [1860](https://grafana.com/grafana/dashboards/1860-node-exporter-full/)(Node Exporter Full)
+    - [193](https://grafana.com/grafana/dashboards/193-docker-monitoring/)(Docker monitoring)
+    - [14282](https://grafana.com/grafana/dashboards/14282-cadvisor-exporter/)(Cadvisor exporter)
+    - [11835](https://grafana.com/grafana/dashboards/11835-redis-dashboard-for-prometheus-redis-exporter-helm-stable-redis-ha/)(
+      Redis Dashboard)
 
 ### Bitwarden
 
@@ -652,11 +664,12 @@ sudo chmod -R 700 /opt/bitwarden
 sudo chown -R bitwarden:bitwarden /opt/bitwarden
 ```
 
+#### Retrieve an installation id and key from [**https://bitwarden.com/host
 
+**](https://bitwarden.com/host/) for use in installation.
 
-#### Retrieve an installation id and key from [**https://bitwarden.com/host**](https://bitwarden.com/host/) for use in installation.
-
-For more information, see [What are my installation id and installation key used for?](https://bitwarden.com/help/hosting-faqs/#general)
+For more information,
+see [What are my installation id and installation key used for?](https://bitwarden.com/help/hosting-faqs/#general)
 
 #### Install Bitwarden on your machine.
 
@@ -679,7 +692,7 @@ globalSettings__mail__smtp__password=password
 globalSettings__disableUserRegistration=true # 禁止注册
 ```
 
->  修改完后执行`./bitwarden.sh restart`
+> 修改完后执行`./bitwarden.sh restart`
 
 #### Start your instance
 
@@ -738,7 +751,7 @@ services:
     restart: unless-stopped
     networks:
       - hoppscotch
-      
+
 volumes:
   postgres_data:
 
@@ -877,7 +890,7 @@ services:
     depends_on:
       - postgres
       - redis
-    command: ["./wait-for-it.sh", "postgres:5432", "--", "npm", "start"]
+    command: [ "./wait-for-it.sh", "postgres:5432", "--", "npm", "start" ]
     ports:
       - "3000:3000"
     env_file:
@@ -1055,10 +1068,53 @@ services:
       - UMASK=022 # 掩码权限，默认000，可以考虑设置为022
       - NASTOOL_AUTO_UPDATE=false  # 如需在启动容器时自动升级程程序请设置为true
       - NASTOOL_CN_UPDATE=false # 如果开启了容器启动自动升级程序，并且网络不太友好时，可以设置为true，会使用国内源进行软件更新
-     #- REPO_URL=https://ghproxy.com/https://github.com/NAStool/nas-tools.git  # 当你访问github网络很差时，可以考虑解释本行注释
+      #- REPO_URL=https://ghproxy.com/https://github.com/NAStool/nas-tools.git  # 当你访问github网络很差时，可以考虑解释本行注释
     restart: always
     network_mode: bridge
     hostname: nas-tools
     container_name: nastool
+```
+
+### telegram-bot-api
+
+#### 申请项目
+
+`https://core.telegram.org/api/obtaining_api_id`
+
+#### 编译项目
+
+> repo：`https://github.com/tdlib/telegram-bot-api`
+>
+> generator：`https://tdlib.github.io/telegram-bot-api/build.html`
+>
+> ```shell
+> apt-get update
+> apt-get upgrade
+> apt-get install make git zlib1g-dev libssl-dev gperf cmake g++
+> git clone --recursive https://github.com/tdlib/telegram-bot-api.git
+> cd telegram-bot-api
+> rm -rf build
+> mkdir build
+> cd build
+> cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=/usr/local ..
+> cmake --build . --target install
+> cd ../..
+> ls -l /usr/local/bin/telegram-bot-api*
+> ```
+
+#### 配置启动
+
+`systemctl edit --force --full tgbot-api.service`
+
+```shell
+[Unit]
+Description=telegram bot api
+After=network.target
+[Service]
+Environment="TELEGRAM_API_ID=xxx"
+Environment="TELEGRAM_API_HASH=xxx"
+ExecStart=/usr/local/bin/telegram-bot-api --http-port=16666 --local --log=/var/log/telegram-bot-api/tg-bot-api.log
+[Install]
+WantedBy=multi-user.target
 ```
 

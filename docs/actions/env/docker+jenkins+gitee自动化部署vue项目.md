@@ -1,8 +1,7 @@
 # docker+jenkins+gitee自动化部署vue项目
 
-之前[个人博客](https://blog.storyxc.com)一直用的travisCI部署在github page上，但是偶尔会抽风无法访问。之前一直偷懒没部署jenkins，手动部署到云服务器又比较麻烦，打包上传很浪费时间，这次就直接动手一步到位，在自己服务器上部署下jekins。
-
-
+之前[个人博客](https://blog.storyxc.com)一直用的travisCI部署在github
+page上，但是偶尔会抽风无法访问。之前一直偷懒没部署jenkins，手动部署到云服务器又比较麻烦，打包上传很浪费时间，这次就直接动手一步到位，在自己服务器上部署下jekins。
 
 ## docker启动jenkins
 
@@ -58,8 +57,6 @@ apt install openjdk-17-jdk
 
 sudo apt install jenkins
 ```
-
-
 
 ![image-20210914101747191](https://storyxc.com/images/blog//image-20210914101747191.png)
 
@@ -137,8 +134,6 @@ Manage Jenkins ---> Global Tool Configuration ---> NodeJS
 
 ![image-20210914112740392](https://storyxc.com/images/blog//image-20210914112740392.png)
 
-
-
 - 生成webhook密码
 
 ![image-20210914112804397](https://storyxc.com/images/blog//image-20210914112804397.png)
@@ -167,13 +162,9 @@ url和webhook密码分别填写后保存
 
 ![image-20210914114129450](https://storyxc.com/images/blog//image-20210914114129450.png)
 
-
-
 我这里选择执行shell
 
 ![image-20210914113546293](https://storyxc.com/images/blog//image-20210914113546293.png)
-
-
 
 然后就是写个简单的脚本执行打包，替换的工作
 
@@ -181,17 +172,14 @@ url和webhook密码分别填写后保存
 
 **第一步cd进入的目录是当前任务的工作空间，这里要把vuepress替换成自己的任务名称即可**
 
-
-
 ::: tip
 
-这里涉及到文件系统操作的内容rm cp等命令需要root用户才能执行，所以在启动docker容器的时候必须使用-u root参数指定root用户，否则打包会失败，操作文件时会提示无权限
+这里涉及到文件系统操作的内容rm cp等命令需要root用户才能执行，所以在启动docker容器的时候必须使用-u
+root参数指定root用户，否则打包会失败，操作文件时会提示无权限
 
 ::::
 
 配置完毕保存即可
-
-
 
 ## 测试
 
@@ -235,3 +223,10 @@ docker login xxx.com --username='xxx' --password=='xxx'
 docker buildx build --platform linux/amd64,linux/arm64 -t xxx/xxx . --push
 ```
 
+## 阻止jenkins杀死衍生进程
+
+在`Execute shell`中添加如下变量
+
+```shell
+BUILD_ID=DONTKILLME
+```

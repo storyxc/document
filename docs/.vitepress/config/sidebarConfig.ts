@@ -519,7 +519,7 @@ export const sidebar: DefaultTheme.Sidebar = {
                 },
                 {
                     text: "家庭服务器home server搭建",
-                    link: "/tinker/network/家庭服务器home server搭建",
+                    link: "/tinker/network/home server搭建",
                 },
                 { text: "frp内网穿透", link: "/tinker/network/frp内网穿透" },
                 {
