@@ -4,8 +4,6 @@
 
 官方地址:https://kafka.apache.org/downloads.html
 
-linux下载`wget https://mirror-hk.koddos.net/apache/kafka/2.8.0/kafka_2.13-2.8.0.tgz`
-
 ## kafka入门介绍
 
 ### kafka作为一个分布式流平台，意味着什么
@@ -79,7 +77,8 @@ Topic: quickstart-events        TopicId: iOM06pJVQV-y_A6QkmfeHw PartitionCount: 
 
 ### 发送消息到Topic
 
-kafka提供了一个命令行工具,可以从输入文件或命令行中读取消息并发送给kafka集群,每一行是一条消息.运行`producer(生产者)`,然后再控制台输入几条消息到服务器
+kafka提供了一个命令行工具,可以从输入文件或命令行中读取消息并发送给kafka集群,每一行是一条消息.运行`producer(生产者)`
+,然后再控制台输入几条消息到服务器
 
 ```bash
 bin/kafka-console-producer.sh --topic quickstart-events --bootstrap-server localhost:9092
@@ -112,7 +111,8 @@ hello world
 this is first kafka message
 ```
 
-此时如果我们再在生产者终端发送消息,消费者终端也能实时进行消费,同样可以使用`Ctrl+C`退出消费者的交互模式,消息会被持久化到kafka中,所以消息可以被消费多次以及被多个消费者消费,比如我们再打开一个窗口,执行消费的命令
+此时如果我们再在生产者终端发送消息,消费者终端也能实时进行消费,同样可以使用`Ctrl+C`
+退出消费者的交互模式,消息会被持久化到kafka中,所以消息可以被消费多次以及被多个消费者消费,比如我们再打开一个窗口,执行消费的命令
 
 ```bash
 [root@localhost kafka_2.13-2.8.0]# bin/kafka-console-consumer.sh --topic quickstart-events --from-beginning --bootstrap-server localhost:9092
@@ -130,29 +130,30 @@ this is first kafka message
 ### 依赖
 
 ```xml
-<dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.kafka</groupId>
-            <artifactId>kafka-streams</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.kafka</groupId>
-            <artifactId>spring-kafka</artifactId>
-        </dependency>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.kafka</groupId>
-            <artifactId>spring-kafka-test</artifactId>
-            <scope>test</scope>
-        </dependency>
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter</artifactId>
+</dependency>
+<dependency>
+<groupId>org.apache.kafka</groupId>
+<artifactId>kafka-streams</artifactId>
+</dependency>
+<dependency>
+<groupId>org.springframework.kafka</groupId>
+<artifactId>spring-kafka</artifactId>
+</dependency>
+
+<dependency>
+<groupId>org.springframework.boot</groupId>
+<artifactId>spring-boot-starter-test</artifactId>
+<scope>test</scope>
+</dependency>
+<dependency>
+<groupId>org.springframework.kafka</groupId>
+<artifactId>spring-kafka-test</artifactId>
+<scope>test</scope>
+</dependency>
 ```
 
 ### 修改kafka配置
@@ -211,9 +212,12 @@ public class KafkaProducerTests {
 
   默认缓冲可立即发送,即使缓存空间没有满,但是如果想减少请求的数量,可设置`linger.ms`大于0,这将让生产者在发送请求前等待一会儿,希望更多的消息来填补到缓冲区中
 
-- `buffer.memory`控制生产者可用的缓存总量,如果消息发送速度比其传输到服务器的快,将会耗尽缓存空间,当缓存空间耗尽时,其他发送调用将会被阻塞,阻塞实践的阈值通过`max.block.ms`设定,之后它将抛出一个TimeoutException
+- `buffer.memory`
+  控制生产者可用的缓存总量,如果消息发送速度比其传输到服务器的快,将会耗尽缓存空间,当缓存空间耗尽时,其他发送调用将会被阻塞,阻塞实践的阈值通过`max.block.ms`
+  设定,之后它将抛出一个TimeoutException
 
-- `key.serializer`和`value.serializer`将用户提供的key和value对象ProducerRecord转换成字节,可以使用附带 的**ByteArraySerializer**或**StringSeriializer**处理byte或string类型
+- `key.serializer`和`value.serializer`将用户提供的key和value对象ProducerRecord转换成字节,可以使用附带 的*
+  *ByteArraySerializer**或**StringSeriializer**处理byte或string类型
 
 ### 消费者
 
@@ -246,7 +250,9 @@ public class KafkaConsumerTests {
 
 - `enable.auto.commit`自动提交偏移量,`auto.commit.interval.ms`控制提交的频率
 - 客户端订阅了名为`test`的topic,消费者组叫test
-- broker通过心跳检测test消费组中的进程,消费者会自动ping集群,告诉集群他还活着,只要消费者停止心跳的时间超过了`session.timeout.ms`就会被认定为故障,它的分区将会被分配到别的进程
+-
+broker通过心跳检测test消费组中的进程,消费者会自动ping集群,告诉集群他还活着,只要消费者停止心跳的时间超过了`session.timeout.ms`
+就会被认定为故障,它的分区将会被分配到别的进程
 
 ### 启动
 
@@ -277,16 +283,15 @@ offset = 522, key = 20, value = Kafka message 20
 ......
 ```
 
-
-
 ## springboot集成kafka
 
 ### 依赖
 
 ```xml
+
 <dependency>
-  <groupId>org.springframework.kafka</groupId>
-  <artifactId>spring-kafka</artifactId>
+    <groupId>org.springframework.kafka</groupId>
+    <artifactId>spring-kafka</artifactId>
 </dependency>
 ```
 
