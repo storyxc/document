@@ -142,8 +142,8 @@ NOTIFYFLAG ONBATT SYSLOG+WALL+EXEC
 
 ```txt
 CMDSCRIPT /usr/local/bin/upssched
-PIPEFN /usr/local/bin/nut/upssched/upssched.pipe
-LOCKFN /usr/local/bin/nut/upssched/upssched.lock
+PIPEFN /var/run/nut/upssched/upssched.pipe
+LOCKFN /var/run/nut/upssched/upssched.lock
 AT ONBATT * START-TIMER power-off 10
 AT ONLINE * CANCEL-TIMER power-off
 ```
@@ -161,7 +161,7 @@ AT ONLINE * CANCEL-TIMER power-off
 
 case $1 in
   power-off)
-    echo '===============断电了===============' >> /usr/local/bin/r.txt
+    echo '$(date +\%Y-\%m-\%d\ \%H:\%M:\%S) - 断电了 ' >> /var/log/nut/nut.log
     #/sbin/upsmon -c fsd #立即通知关机
     ;;
   *)
