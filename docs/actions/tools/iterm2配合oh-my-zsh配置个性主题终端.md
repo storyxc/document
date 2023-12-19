@@ -1,7 +1,5 @@
 # iterm2配合oh-my-zsh配置个性主题终端
 
-
-
 ## 安装iterm2
 
 官网下载：https://iterm2.com/
@@ -32,26 +30,31 @@
 
 ### clone代码到本地
 
-`git clone https://github.com/zsh-users/zsh-syntax-highlighting ~/.zsh/zsh-syntax-highlighting`
-
-### 修改.zshrc配置
-
-添加配置：`source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh`
-
-### 效果
-
-![image-20211119151720033](https://storyxc.com/images/blog//image-20211119151720033.png)
+`git clone https://github.com/zsh-users/zsh-syntax-highlighting $ZSH_CUSTOM/plugins/zsh-syntax-highlighting`
 
 ## 安装历史指令提示插件
 
 ### clone代码到本地
-`git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions`
 
+`git clone https://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions`
 
-### 修改.zshrc配置
-`source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh`
+## 修改.zshrc配置
 
+- ~~`source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh`~~
+- ~~`source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh`~~
 
+```shell
+# ~/.zshrc
+plugins=(
+  git
+  zsh-autosuggestions
+  zsh-syntax-highlighting
+)
+```
+
+### 效果
+
+![image-20211119151720033](https://storyxc.com/images/blog//image-20211119151720033.png)
 
 ## powerlevel10k主题
 
