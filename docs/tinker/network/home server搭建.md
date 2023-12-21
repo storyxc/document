@@ -306,8 +306,8 @@ apt install intel-media-va-driver
 ### kafka
 
 ```shell
- wget https://dlcdn.apache.org/kafka/3.1.1/kafka_2.12-3.1.1.tgz
- tar -xzvf kafka_2.12-3.1.1.tgz
+ wget https://downloads.apache.org/kafka/3.6.1/kafka_2.13-3.6.1.tgz
+ tar -xzvf kafka_2.13-3.6.1.tgz -C /usr/local
 ```
 
 zookeeper.service
