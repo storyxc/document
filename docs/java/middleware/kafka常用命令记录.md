@@ -26,6 +26,16 @@
 
 `kafka-topics --bootstrap-server 127.0.0.1:9092 --delete --topic topic-name`
 
+##### 清空topic的消息
+
+> 给topic保留消息时间改为1s，然后等topic中的消息被自动删除，再删除该配置
+>
+> 删除topic也可以实现清空消息
+
+`kafka-configs --bootstrap-server 127.0.0.1:9092 --entity-type topics --alter --entity-name example --add-config retention.ms=1000`
+
+`kafka-configs --bootstrap-server 127.0.0.1:9092 --entity-type topics --alter --entity-name example --delete-config retention.ms`
+
 ## 消费者组
 
 ##### 查看所有消费者组
@@ -44,7 +54,7 @@
 
 ##### 查看topic中的所有消息
 
-`kafka-console-consumer --bootstrap-server 127.0.0.1:9092  --topic topic-name --from-beginning`
+`kafka-console-consumer --bootstrap-server 127.0.0.1:9092 --topic topic-name --from-beginning`
 
 ##### 指定分区、offset的消息
 
