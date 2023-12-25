@@ -1118,3 +1118,10 @@ ExecStart=/usr/local/bin/telegram-bot-api --http-port=16666 --local --log=/var/l
 WantedBy=multi-user.target
 ```
 
+### immich
+
+> https://github.com/immich-app/immich
+
+### memos
+
+> https://github.com/usememos/memos
