@@ -172,6 +172,7 @@ export const sidebar: DefaultTheme.Sidebar = {
                 { text: "python基础语法", link: "/python/base/python基础语法" },
                 { text: "python并发编程", link: "/python/base/python并发编程" },
                 { text: "装饰器深入", link: "/python/base/装饰器深入" },
+                { text: "Poetry", link: "/python/base/Poetry" },
             ],
         },
         {
