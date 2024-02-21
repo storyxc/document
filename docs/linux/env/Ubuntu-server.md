@@ -48,23 +48,23 @@ resize2fs /dev/sdXX #调整文件系统的大小
 > 
 > TARGET_PATH=$(find /lib/modules/$(uname -r)/kernel/drivers/net/ethernet -name realtek -type d)
 > if [ "$TARGET_PATH" = "" ]; then
-> TARGET_PATH=$(find /lib/modules/$(uname -r)/kernel/drivers/net -name realtek -type d)
+> 	TARGET_PATH=$(find /lib/modules/$(uname -r)/kernel/drivers/net -name realtek -type d)
 > fi
 > if [ "$TARGET_PATH" = "" ]; then
-> TARGET_PATH=/lib/modules/$(uname -r)/kernel/drivers/net
+> 	TARGET_PATH=/lib/modules/$(uname -r)/kernel/drivers/net
 > fi
 > echo
 > echo "Check old driver and unload it."
 > check=`lsmod | grep r8169`
 > if [ "$check" != "" ]; then
-> echo "rmmod r8169"
-> /sbin/rmmod r8169
+>         echo "rmmod r8169"
+>         /sbin/rmmod r8169
 > fi
 > 
 > check=`lsmod | grep r8125`
 > if [ "$check" != "" ]; then
-> echo "rmmod r8125"
-> /sbin/rmmod r8125
+>         echo "rmmod r8125"
+>         /sbin/rmmod r8125
 > fi
 > 
 > echo "Build the module and install"
@@ -76,24 +76,24 @@ resize2fs /dev/sdXX #调整文件系统的大小
 > module=${module%.ko}
 > 
 > if [ "$module" = "" ]; then
-> echo "No driver exists!!!"
-> exit 1
+> 	echo "No driver exists!!!"
+> 	exit 1
 > elif [ "$module" != "r8169" ]; then
-> if test -e $TARGET_PATH/r8169.ko ; then
-> echo "Backup r8169.ko"
-> if test -e $TARGET_PATH/r8169.bak ; then
-> i=0
-> while test -e $TARGET_PATH/r8169.bak$i
-> do
-> i=$(($i+1))
-> done
-> echo "rename r8169.ko to r8169.bak$i"
-> mv $TARGET_PATH/r8169.ko $TARGET_PATH/r8169.bak$i
-> else
-> echo "rename r8169.ko to r8169.bak"
-> mv $TARGET_PATH/r8169.ko $TARGET_PATH/r8169.bak
-> fi
-> fi
+> 	if test -e $TARGET_PATH/r8169.ko ; then
+> 		echo "Backup r8169.ko"
+> 		if test -e $TARGET_PATH/r8169.bak ; then
+> 			i=0
+> 			while test -e $TARGET_PATH/r8169.bak$i
+> 			do
+> 				i=$(($i+1))
+> 			done
+> 			echo "rename r8169.ko to r8169.bak$i"
+> 			mv $TARGET_PATH/r8169.ko $TARGET_PATH/r8169.bak$i
+> 		else
+> 			echo "rename r8169.ko to r8169.bak"
+> 			mv $TARGET_PATH/r8169.ko $TARGET_PATH/r8169.bak
+> 		fi
+> 	fi
 > fi
 > 
 > echo "DEPMOD $(uname -r)"
@@ -105,23 +105,23 @@ resize2fs /dev/sdXX #调整文件系统的大小
 > distrib_list="ubuntu debian"
 > 
 > if [ -r /etc/debian_version ]; then
-> is_update_initramfs=y
+> 	is_update_initramfs=y
 > elif [ -r /etc/lsb-release ]; then
-> for distrib in $distrib_list
-> do
-> /bin/grep -i "$distrib" /etc/lsb-release 2>&1 /dev/null && \
-> is_update_initramfs=y && break
-> done
+> 	for distrib in $distrib_list
+> 	do
+> 		/bin/grep -i "$distrib" /etc/lsb-release 2>&1 /dev/null && \
+> 			is_update_initramfs=y && break
+> 	done
 > fi
 > 
 > if [ "$is_update_initramfs" = "y" ]; then
-> if which update-initramfs >/dev/null ; then
-> echo "Updating initramfs. Please wait."
-> update-initramfs -u -k $(uname -r)
-> else
-> echo "update-initramfs: command not found"
-> exit 1
-> fi
+> 	if which update-initramfs >/dev/null ; then
+> 		echo "Updating initramfs. Please wait."
+> 		update-initramfs -u -k $(uname -r)
+> 	else
+> 		echo "update-initramfs: command not found"
+> 		exit 1
+> 	fi
 > fi
 > 
 > echo "Completed."
@@ -142,3 +142,36 @@ depmod `uname -r`
 # 更新initramfs
 update-initramfs -u -k $(uname -r)
 ```
+
+## 瑞昱2.5G网卡r8125b驱动安装
+
+> A DKMS package for easy use of Realtek r8125 driver, which supports 2.5 GbE.
+> https://github.com/awesometic/realtek-r8125-dkms
+
+- `sudo add-apt-repository ppa:awesometic/ppa`
+
+- `sudo apt install realtek-r8125-dkms`
+
+- ```shell
+  sudo tee -a /etc/modprobe.d/blacklist-r8169.conf > /dev/null <<EOT
+  # To use r8125 driver explicitly
+  blacklist r8169
+  EOT
+  ```
+
+- `sudo update-initramfs -u`
+
+- `vim /etc/netplan/00-installer-config.yaml`
+
+- ```shell
+  # This is the network config written by 'subiquity'
+  network:
+    ethernets:
+      enp1s0: # 根据ifconfig -a找到2.5G网卡设备的名称
+        dhcp4: true
+    version: 2
+  ```
+
+- `netplan apply`
+
+- `reboot`
