@@ -33,7 +33,7 @@ export default defineConfig({
         },
         footer: {
             message: '<a href="https://beian.miit.gov.cn/" target="_blank">豫ICP备19046036号</a></span>',
-            copyright: 'Copyright © 2019-2023<span><a href="https://storyxc.com" target="_blank" style="font-weight:bold"> story</a>'
+            copyright: 'Copyright © 2019-2024<span><a href="https://storyxc.com" target="_blank" style="font-weight:bold"> story</a>'
         }
     }
 })
