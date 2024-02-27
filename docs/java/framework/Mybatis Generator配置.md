@@ -5,14 +5,12 @@
 
 mbg逆向工程能快速生成实体类和mapper文件以及xml，提升开发效率。记录下不同持久层框架对应的mbg配置备忘。
 
-
-
 - mbg的context标签可以自定义targetRuntime，具体的区别可以在http://mybatis.org/generator/quickstart.html#target-runtime-information-and-samples查看。MyBatis3，生成的代码量比较大，会有byExample和selective相关的代码生成。MyBatis3Simple生成的代码量比较小，不会有byExample和selective方法生成。
 
 - 常用运行方式（还包含 ant、命令行、eclipse）
 
-  - java代码
-  - maven plugin
+    - java代码
+    - maven plugin
 
 - maven依赖
 
@@ -56,8 +54,6 @@ mbg逆向工程能快速生成实体类和mapper文件以及xml，提升开发�
           </plugins>
       </build>
   ```
-
-  
 
 ## 通用mapper
 
@@ -106,7 +102,7 @@ mbg逆向工程能快速生成实体类和mapper文件以及xml，提升开发�
                          targetProject="/Users/story/project/xx/src/main/resources"/>
 
         <!--javaClientGenerator?,-->
-        <javaClientGenerator targetPackage="cn.superdesk.app.wechat.dao.mapper"
+        <javaClientGenerator targetPackage="cn.xxx.app.wechat.dao.mapper"
                              targetProject="/Users/story/project/xxx/src/main/java"
                              type="XMLMAPPER"/>
 
@@ -114,7 +110,7 @@ mbg逆向工程能快速生成实体类和mapper文件以及xml，提升开发�
         <table tableName="tb_xx" domainObjectName="XxEntity">
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
         </table>
-        
+
     </context>
 
 </generatorConfiguration>
@@ -403,11 +399,11 @@ public class MyBatisGeneratorTool {
             <!-- 是否允许子包 -->
             <property name="enableSubPackages" value="false"/>
             <!-- 是否对modal添加构造函数 -->
-<!--            <property name="constructorBased" value="true"/>-->
+            <!--            <property name="constructorBased" value="true"/>-->
             <!-- 是否清理从数据库中查询出的字符串左右两边的空白字符 -->
-<!--            <property name="trimStrings" value="true"/>-->
+            <!--            <property name="trimStrings" value="true"/>-->
             <!-- 建立modal对象是否不可改变 即生成的modal对象不会有setter方法，只有构造方法 -->
-<!--            <property name="immutable" value="false"/>-->
+            <!--            <property name="immutable" value="false"/>-->
         </javaModelGenerator>
         <!-- targetPackage 和 targetProject：生成的 mapper 文件的包和位置 -->
         <sqlMapGenerator targetPackage="xx"
@@ -429,3 +425,86 @@ public class MyBatisGeneratorTool {
 ```
 
 ![image-20220409211128783](https://storyxc.com/images/blog/image-20220409211128783.png)
+
+## 新版
+
+```java
+import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.generator.FastAutoGenerator;
+import com.baomidou.mybatisplus.generator.config.OutputFile;
+import com.baomidou.mybatisplus.generator.config.rules.DateType;
+import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
+
+import java.util.Collections;
+
+// 执行 main 方法，控制台输入模块表名，回车自动生成对应项目目录中
+public class MybatisPlusCodeGenerator {
+
+    public static void main(String[] args) {
+        //====================配置变量区域=====================//
+        String author = "xc";// 生成文件的作者，可以不填
+        String rootPackage = "com.story.test";// 生成的entity、controller、service等包所在的公共上一级包路径全限定名
+        String module = "modules/moduleA";
+        String folder = "subFolder";
+        // 数据库配置
+        String url = "jdbc:mysql://ip:port/database?useUnicode=true&characterEncoding=UTF-8&useSSL=false";
+        String username = "";
+        String password = "";
+
+        String[] tableNames = new String[]{"tb_table_name"};
+        String[] tablePrefix = new String[]{"tb_"};
+
+        FastAutoGenerator.create(
+                        // 数据源配置
+                        url,
+                        username,
+                        password)
+                // 全局配置
+                .globalConfig(builder -> {
+                    builder.author(author)
+                            .outputDir(System.getProperty("user.dir") + "/" + module + "/src/main/java")
+                            .disableOpenDir()
+                            .dateType(DateType.ONLY_DATE);
+                })
+                // 包配置
+                .packageConfig(builder -> {
+                    builder.parent(rootPackage)
+                            .entity("dao.entity" + (StrUtil.isBlank(folder) ? "" : "." + folder))
+                            .mapper("dao.mapper" + (StrUtil.isBlank(folder) ? "" : "." + folder))
+                            .service("service" + (StrUtil.isBlank(folder) ? "" : "." + folder))
+                            .serviceImpl("service.impl" + (StrUtil.isBlank(folder) ? "" : "." + folder))
+                            .pathInfo(Collections.singletonMap(
+                                    OutputFile.xml, System.getProperty("user.dir") + "/" + module + "/src/main/resources/mapper" + (StrUtil.isBlank(folder) ? "" : "/" + folder)
+                            ))
+                    ;
+
+                })
+                // 模版配置
+                .templateConfig(builder -> {
+                    builder
+                            // .controller("/templates/controller.java")
+                            .controller("")
+                            .serviceImpl("/templates/serviceImpl.java")
+                            // .service("")
+                            // .serviceImpl("")
+                            .mapper("/templates/mapper.java")
+                            .entity("/templates/entity.java");
+                })
+                // 策略配置
+                .strategyConfig(builder -> {
+                    builder.addInclude(tableNames)
+                            .addTablePrefix(tablePrefix)
+                            .controllerBuilder().enableRestStyle()
+                            .entityBuilder().enableLombok()
+                            .entityBuilder().enableTableFieldAnnotation()
+                            .serviceBuilder().formatServiceFileName("%sService")
+                            .mapperBuilder().enableBaseResultMap();
+
+
+                })
+                .templateEngine(new FreemarkerTemplateEngine())
+                .execute();
+
+    }
+}
+```
