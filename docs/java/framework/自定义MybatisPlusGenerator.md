@@ -1,7 +1,5 @@
 # 自定义MybatisPlusGenerator
 
-
-
 ## 入口类
 
 ```java
@@ -190,152 +188,152 @@ public class MybatisPlusCodeGenerator {
 package ${package.Entity};
 
 <#list table.importPackages as pkg>
-import ${pkg};
-</#list>
+        import ${pkg};
+        </#list>
 <#if swagger2>
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-</#if>
+        import io.swagger.annotations.ApiModel;
+        import io.swagger.annotations.ApiModelProperty;
+        </#if>
 <#if entityLombokModel>
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-    <#if chainModel>
-import lombok.experimental.Accessors;
-    </#if>
-</#if>
-import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.experimental.FieldNameConstants;
+        import lombok.Data;
+        import lombok.EqualsAndHashCode;
+<#if chainModel>
+        import lombok.experimental.Accessors;
+        </#if>
+        </#if>
+        import io.swagger.v3.oas.annotations.media.Schema;
+        import lombok.experimental.FieldNameConstants;
 
-/**
- * ${table.comment!}
- *
- * @author ${author}
- * @since ${date}
- */
+        /**
+        * ${table.comment!}
+        *
+        * @author ${author}
+        * @since ${date}
+        */
 <#if entityLombokModel>
-@Data
-    <#if superEntityClass??>
-@EqualsAndHashCode(callSuper = true)
-    <#else>
-@EqualsAndHashCode(callSuper = false)
-    </#if>
-    <#if chainModel>
-@Accessors(chain = true)
-    </#if>
-</#if>
-<#if table.convert>
-@TableName("${table.name}")
-</#if>
-<#if swagger2>
-@ApiModel(value="${entity}对象", description="${table.comment!}")
-</#if>
-@FieldNameConstants
+        @Data
 <#if superEntityClass??>
-public class ${entity} extends ${superEntityClass}<#if activeRecord><${entity}></#if> {
-<#elseif activeRecord>
-public class ${entity} extends Model<${entity}> {
+        @EqualsAndHashCode(callSuper = true)
 <#else>
-public class ${entity} implements Serializable {
-</#if>
+        @EqualsAndHashCode(callSuper = false)
+        </#if>
+<#if chainModel>
+        @Accessors(chain = true)
+        </#if>
+        </#if>
+<#if table.convert>
+        @TableName("${table.name}")
+        </#if>
+<#if swagger2>
+        @ApiModel(value="${entity}对象", description="${table.comment!}")
+        </#if>
+        @FieldNameConstants
+<#if superEntityClass??>
+        public class ${entity} extends ${superEntityClass}<#if activeRecord><${entity}></#if> {
+<#elseif activeRecord>
+        public class ${entity} extends Model<${entity}> {
+<#else>
+        public class ${entity} implements Serializable {
+        </#if>
 
 <#if entitySerialVersionUID>
-    private static final long serialVersionUID = 1L;
-</#if>
+        private static final long serialVersionUID = 1L;
+        </#if>
 <#-- ----------  BEGIN 字段循环遍历  ---------->
 <#list table.fields as field>
-    <#if field.keyFlag>
-        <#assign keyPropertyName="${field.propertyName}"/>
-    </#if>
+<#if field.keyFlag>
+<#assign keyPropertyName="${field.propertyName}"/>
+        </#if>
 
-    @Schema(description = "${field.comment}")
-    <#if field.keyFlag>
-        <#-- 主键 -->
-        <#if field.keyIdentityFlag>
-    @TableId(value = "${field.annotationColumnName}", type = IdType.AUTO)
-        <#elseif idType??>
-    @TableId(value = "${field.annotationColumnName}", type = IdType.${idType})
-        <#elseif field.convert>
-    @TableId("${field.annotationColumnName}")
+        @Schema(description = "${field.comment}")
+<#if field.keyFlag>
+<#-- 主键 -->
+<#if field.keyIdentityFlag>
+        @TableId(value = "${field.annotationColumnName}", type = IdType.AUTO)
+<#elseif idType??>
+        @TableId(value = "${field.annotationColumnName}", type = IdType.${idType})
+<#elseif field.convert>
+        @TableId("${field.annotationColumnName}")
         </#if>
-        <#-- 普通字段 -->
-    <#elseif field.fill??>
-    <#-- -----   存在字段填充设置   ----->
-        <#if field.convert>
-    @TableField(value = "${field.annotationColumnName}", fill = FieldFill.${field.fill})
-        <#else>
-    @TableField(fill = FieldFill.${field.fill})
+<#-- 普通字段 -->
+<#elseif field.fill??>
+<#-- -----   存在字段填充设置   ----->
+<#if field.convert>
+        @TableField(value = "${field.annotationColumnName}", fill = FieldFill.${field.fill})
+<#else>
+        @TableField(fill = FieldFill.${field.fill})
         </#if>
-    <#elseif field.convert>
-    @TableField("${field.annotationColumnName}")
-    </#if>
-    <#-- 乐观锁注解 -->
-    <#if (versionFieldName!"") == field.name>
-    @Version
-    </#if>
-    <#-- 逻辑删除注解 -->
-    <#if (logicDeleteFieldName!"") == field.name>
-    @TableLogic
-    </#if>
-    private ${field.propertyType} ${field.propertyName};
-</#list>
+<#elseif field.convert>
+        @TableField("${field.annotationColumnName}")
+        </#if>
+<#-- 乐观锁注解 -->
+<#if (versionFieldName!"") == field.name>
+        @Version
+        </#if>
+<#-- 逻辑删除注解 -->
+<#if (logicDeleteFieldName!"") == field.name>
+        @TableLogic
+        </#if>
+        private ${field.propertyType} ${field.propertyName};
+        </#list>
 <#------------  END 字段循环遍历  ---------->
 
 <#if !entityLombokModel>
-    <#list table.fields as field>
-        <#if field.propertyType == "boolean">
-            <#assign getprefix="is"/>
-        <#else>
-            <#assign getprefix="get"/>
+<#list table.fields as field>
+<#if field.propertyType == "boolean">
+<#assign getprefix="is"/>
+<#else>
+<#assign getprefix="get"/>
         </#if>
-    public ${field.propertyType} ${getprefix}${field.capitalName}() {
+        public ${field.propertyType} ${getprefix}${field.capitalName}() {
         return ${field.propertyName};
-    }
+        }
 
-    <#if chainModel>
-    public ${entity} set${field.capitalName}(${field.propertyType} ${field.propertyName}) {
-    <#else>
-    public void set${field.capitalName}(${field.propertyType} ${field.propertyName}) {
-    </#if>
+<#if chainModel>
+        public ${entity} set${field.capitalName}(${field.propertyType} ${field.propertyName}) {
+<#else>
+        public void set${field.capitalName}(${field.propertyType} ${field.propertyName}) {
+        </#if>
         this.${field.propertyName} = ${field.propertyName};
-        <#if chainModel>
+<#if chainModel>
         return this;
         </#if>
-    }
-    </#list>
-</#if>
+        }
+        </#list>
+        </#if>
 
 <#if entityColumnConstant>
-    <#list table.fields as field>
-    public static final String ${field.name?upper_case} = "${field.name}";
+<#list table.fields as field>
+        public static final String ${field.name?upper_case} = "${field.name}";
 
-    </#list>
-</#if>
-<#if activeRecord>
-    @Override
-    protected Serializable pkVal() {
-    <#if keyPropertyName??>
-        return this.${keyPropertyName};
-    <#else>
-        return null;
-    </#if>
-    }
-
-</#if>
-<#if !entityLombokModel>
-    @Override
-    public String toString() {
-        return "${entity}{" +
-    <#list table.fields as field>
-        <#if field_index==0>
-            "${field.propertyName}=" + ${field.propertyName} +
-        <#else>
-            ", ${field.propertyName}=" + ${field.propertyName} +
+        </#list>
         </#if>
-    </#list>
+<#if activeRecord>
+        @Override
+        protected Serializable pkVal() {
+<#if keyPropertyName??>
+        return this.${keyPropertyName};
+<#else>
+        return null;
+        </#if>
+        }
+
+        </#if>
+<#if !entityLombokModel>
+        @Override
+        public String toString() {
+        return "${entity}{" +
+<#list table.fields as field>
+<#if field_index==0>
+        "${field.propertyName}=" + ${field.propertyName} +
+<#else>
+        ", ${field.propertyName}=" + ${field.propertyName} +
+        </#if>
+        </#list>
         "}";
-    }
-</#if>
-}
+        }
+        </#if>
+        }
 ```
 
 ### story-controller.java.ftl
@@ -343,47 +341,47 @@ public class ${entity} implements Serializable {
 ```xml
 package ${package.Controller};
 
-import ${package.Service}.${table.serviceName};
-import org.springframework.web.bind.annotation.RequestMapping;
+        import ${package.Service}.${table.serviceName};
+        import org.springframework.web.bind.annotation.RequestMapping;
 <#if restControllerStyle>
-import org.springframework.web.bind.annotation.RestController;
+        import org.springframework.web.bind.annotation.RestController;
 <#else>
-import org.springframework.stereotype.Controller;
-</#if>
+        import org.springframework.stereotype.Controller;
+        </#if>
 <#if superControllerClassPackage??>
-import ${superControllerClassPackage};
-</#if>
-import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+        import ${superControllerClassPackage};
+        </#if>
+        import io.swagger.v3.oas.annotations.tags.Tag;
+        import lombok.RequiredArgsConstructor;
+        import lombok.extern.slf4j.Slf4j;
 
-/**
- * ${table.comment!} 前端控制器
- *
- * @author ${author}
- * @since ${date}
- */
-@Tag(name = "")
-@Slf4j
-@RequiredArgsConstructor
+        /**
+        * ${table.comment!} 前端控制器
+        *
+        * @author ${author}
+        * @since ${date}
+        */
+        @Tag(name = "")
+        @Slf4j
+        @RequiredArgsConstructor
 <#if restControllerStyle>
-@RestController
+        @RestController
 <#else>
-@Controller
-</#if>
-@RequestMapping("<#if package.ModuleName?? && package.ModuleName != "">/${package.ModuleName}</#if>/<#if controllerMappingHyphenStyle??>${controllerMappingHyphen}<#else>${table.entityPath}</#if>")
+        @Controller
+        </#if>
+        @RequestMapping("<#if package.ModuleName?? && package.ModuleName != "">/${package.ModuleName}</#if>/<#if controllerMappingHyphenStyle??>${controllerMappingHyphen}<#else>${table.entityPath}</#if>")
 <#if kotlin>
-class ${table.controllerName}<#if superControllerClass??> : ${superControllerClass}()</#if>
+        class ${table.controllerName}<#if superControllerClass??> : ${superControllerClass}()</#if>
 <#else>
 <#if superControllerClass??>
-public class ${table.controllerName} extends ${superControllerClass} {
+        public class ${table.controllerName} extends ${superControllerClass} {
 <#else>
-public class ${table.controllerName} {
-</#if>
-    private final ${table.serviceName} ${table.serviceName?uncap_first};
+        public class ${table.controllerName} {
+        </#if>
+        private final ${table.serviceName} ${table.serviceName?uncap_first};
 
-}
-</#if>
+        }
+        </#if>
 ```
 
 ### story-serviceImpl.java.ftl
@@ -391,32 +389,32 @@ public class ${table.controllerName} {
 ```xml
 package ${package.ServiceImpl};
 
-import ${package.Entity}.${entity};
-import ${package.Mapper}.${table.mapperName};
-import ${package.Service}.${table.serviceName};
-import ${superServiceImplClassPackage};
-import org.springframework.stereotype.Service;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+        import ${package.Entity}.${entity};
+        import ${package.Mapper}.${table.mapperName};
+        import ${package.Service}.${table.serviceName};
+        import ${superServiceImplClassPackage};
+        import org.springframework.stereotype.Service;
+        import lombok.RequiredArgsConstructor;
+        import lombok.extern.slf4j.Slf4j;
 
-/**
- * ${table.comment!} 服务实现类
- *
- * @author ${author}
- * @since ${date}
- */
-@Slf4j
-@RequiredArgsConstructor
-@Service
+        /**
+        * ${table.comment!} 服务实现类
+        *
+        * @author ${author}
+        * @since ${date}
+        */
+        @Slf4j
+        @RequiredArgsConstructor
+        @Service
 <#if kotlin>
-open class ${table.serviceImplName} : ${superServiceImplClass}<${table.mapperName}, ${entity}>(), ${table.serviceName} {
+        open class ${table.serviceImplName} : ${superServiceImplClass}<${table.mapperName}, ${entity}>(), ${table.serviceName} {
 
-}
+        }
 <#else>
-public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.mapperName}, ${entity}> implements ${table.serviceName} {
+        public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.mapperName}, ${entity}> implements ${table.serviceName} {
 
-}
-</#if>
+        }
+        </#if>
 ```
 
 ### story-mapper.java.ftl
@@ -446,3 +444,85 @@ public interface ${table.mapperName} extends ${superMapperClass}<${entity}> {
 </#if>
 ```
 
+## 新版
+
+```java
+import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.generator.FastAutoGenerator;
+import com.baomidou.mybatisplus.generator.config.OutputFile;
+import com.baomidou.mybatisplus.generator.config.rules.DateType;
+import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
+
+import java.util.Collections;
+
+// 执行 main 方法，控制台输入模块表名，回车自动生成对应项目目录中
+public class MybatisPlusCodeGenerator {
+
+    public static void main(String[] args) {
+        //====================配置变量区域=====================//
+        String author = "xc";// 生成文件的作者，可以不填
+        String rootPackage = "com.story.test";// 生成的entity、controller、service等包所在的公共上一级包路径全限定名
+        String module = "modules/moduleA";
+        String folder = "subFolder";
+        // 数据库配置
+        String url = "jdbc:mysql://ip:port/database?useUnicode=true&characterEncoding=UTF-8&useSSL=false";
+        String username = "";
+        String password = "";
+
+        String[] tableNames = new String[]{"tb_table_name"};
+        String[] tablePrefix = new String[]{"tb_"};
+
+        FastAutoGenerator.create(
+                        // 数据源配置
+                        url,
+                        username,
+                        password)
+                // 全局配置
+                .globalConfig(builder -> {
+                    builder.author(author)
+                            .outputDir(System.getProperty("user.dir") + "/" + module + "/src/main/java")
+                            .disableOpenDir()
+                            .dateType(DateType.ONLY_DATE);
+                })
+                // 包配置
+                .packageConfig(builder -> {
+                    builder.parent(rootPackage)
+                            .entity("dao.entity" + (StrUtil.isBlank(folder) ? "" : "." + folder))
+                            .mapper("dao.mapper" + (StrUtil.isBlank(folder) ? "" : "." + folder))
+                            .service("service" + (StrUtil.isBlank(folder) ? "" : "." + folder))
+                            .serviceImpl("service.impl" + (StrUtil.isBlank(folder) ? "" : "." + folder))
+                            .pathInfo(Collections.singletonMap(
+                                    OutputFile.xml, System.getProperty("user.dir") + "/" + module + "/src/main/resources/mapper" + (StrUtil.isBlank(folder) ? "" : "/" + folder)
+                            ))
+                    ;
+
+                })
+                // 模版配置
+                .templateConfig(builder -> {
+                    builder
+                            // .controller("/templates/controller.java")
+                            .controller("")
+                            .serviceImpl("/templates/serviceImpl.java")
+                            // .service("")
+                            // .serviceImpl("")
+                            .mapper("/templates/mapper.java")
+                            .entity("/templates/entity.java");
+                })
+                // 策略配置
+                .strategyConfig(builder -> {
+                    builder.addInclude(tableNames)
+                            .addTablePrefix(tablePrefix)
+                            .controllerBuilder().enableRestStyle()
+                            .entityBuilder().enableLombok()
+                            .entityBuilder().enableTableFieldAnnotation()
+                            .serviceBuilder().formatServiceFileName("%sService")
+                            .mapperBuilder().enableBaseResultMap();
+
+
+                })
+                .templateEngine(new FreemarkerTemplateEngine())
+                .execute();
+
+    }
+}
+```
