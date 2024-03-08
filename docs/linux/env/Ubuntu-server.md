@@ -175,3 +175,5 @@ update-initramfs -u -k $(uname -r)
 - `netplan apply`
 
 - `reboot`
+
+> 内核更新后重新安装: `apt install ./realtek-r8125-9.012.04-1_amd64.deb --reinstall`
