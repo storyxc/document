@@ -4,7 +4,7 @@
 
 ```bash
 Set objShell = CreateObject("WScript.Shell")
-objShell.Run "cmd /c wsl", 0
+objShell.Run "cmd /c wsl -d Debian", 0
 Set objShell = Nothing
 ```
 
