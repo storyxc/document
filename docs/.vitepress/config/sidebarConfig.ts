@@ -437,10 +437,6 @@ export const sidebar: DefaultTheme.Sidebar = {
             collapsed: false,
             items: [
                 {
-                    text: "Windows下Docker Desktop安装",
-                    link: "/actions/env/Windows下Docker Desktop安装",
-                },
-                {
                     text: "git配置socks5代理解决github上down代码慢的问题",
                     link: "/actions/env/git配置socks5代理解决github上down代码慢的问题",
                 },
@@ -473,9 +469,13 @@ export const sidebar: DefaultTheme.Sidebar = {
                     link: "/actions/env/macos开机自动执行脚本",
                 },
                 {
-                    text: "Windows开机启动WSL",
-                    link: "/actions/env/Windows开机启动WSL",
+                    text: "WSL",
+                    link: "/actions/env/WSL",
                 },
+                {
+                    text: "typecho部署",
+                    link: "/actions/env/typecho部署"
+                }
             ],
         },
         {
