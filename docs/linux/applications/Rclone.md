@@ -101,7 +101,7 @@ Enter a string value. Press Enter for the default ("").
 Choose a number from below, or type in your own value
  1 / Connect to example.com
    \ "https://example.com"
-url> https://ip:port
+url> https://ip:port/dav
 Name of the Webdav site/service/software you are using
 Enter a string value. Press Enter for the default ("").
 Choose a number from below, or type in your own value
