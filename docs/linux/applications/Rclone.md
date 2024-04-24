@@ -101,7 +101,7 @@ Enter a string value. Press Enter for the default ("").
 Choose a number from below, or type in your own value
  1 / Connect to example.com
    \ "https://example.com"
-url> https://alist.storyxc.com:63443
+url> https://ip:port
 Name of the Webdav site/service/software you are using
 Enter a string value. Press Enter for the default ("").
 Choose a number from below, or type in your own value
