@@ -1125,3 +1125,55 @@ WantedBy=multi-user.target
 ### memos
 
 > https://github.com/usememos/memos
+
+### uwsgi
+
+```shell
+[Unit]
+Description=uwsgi
+After=network.target
+[Service]
+Type=simple
+ExecStart=/usr/bin/uwsgi --emperor /opt/uwsgi
+Restart=on-failure
+[Install]
+WantedBy=multi-user.target
+```
+
+```ini
+[uwsgi]
+; 套接字文件的位置,可以是Unix socket或TCP地址
+http-socket = ip:port
+
+; Django项目根目录
+chdir = /root/project/home
+
+; 加载Django应用
+module = home.wsgi:application
+
+; 启用主线程
+master = true
+
+; 进程数量
+processes = 1
+
+; 每个进程的线程数
+threads = 1
+
+; 启用文件监控,代码改动自动重载
+py-autoreload = 1
+
+; 设置虚拟环境
+virtualenv = /root/project/home/venv
+
+; python搜索路径
+pythonpath = /root/project/home/venv/lib/python3.10/site-packages
+
+
+; 日志目录
+logto = /var/log/uwsgi/%n.log
+
+plugins = python3
+
+buffer-size = 65536
+```
