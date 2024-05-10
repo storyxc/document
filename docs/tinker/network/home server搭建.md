@@ -12,16 +12,12 @@
 
 ### 分析
 
-1.
-
-PC上还有块4T的希捷酷鹰，再添3块4T紫盘组raid5阵列。机箱的盘位就至少需要4个以上，挑了一圈就乔思伯N1（5盘位）和万由的810A（8盘位）能看的过去，虽然万由盘位多但是价格比n1高了大几百，目前也用不到这么多盘位，因此机箱确定了n1，主板也要买itx版型。
+1. PC上还有块4T的希捷酷鹰，再添3块4T紫盘组raid5阵列。机箱的盘位就至少需要4个以上，挑了一圈就乔思伯N1（5盘位）和万由的810A（8盘位）能看的过去，虽然万由盘位多但是价格比n1高了大几百，目前也用不到这么多盘位，因此机箱确定了n1，主板也要买itx版型。
 
 2. 要跑的docker容器比较多，下载器服务、阿里云的webdav容器、直播录制程序容器等等。。。因此内存需要32G以上。
 
-3. 确定使用的系统是个比较复杂的过程，因为有过PVE虚拟机翻车的经历，这个服务器又主要承载了数据存储功能，所以要追求稳定，因此首先排除PVE和ESXi这些虚拟机系统，直接物理机装系统。然后我在虚拟机上装了最新版的Truenas
-   scale体验了一下，这个系统是基于debian用python开发的，交互上倒没什么问题，但是因为是个纯nas系统，对主系统限制较多，自由度不高（不能直接装软件），因此也被pass，黑群晖这些就不说了，在我看来还不如truenas。一圈排除下来就只能直接装linux
-   server了。去V2EX论坛问了老哥们的意见，推荐debian的很多，也有建议用最熟悉的系统的，最后我选择了后者，选了比较有把握的ubuntu
-   server，正好ubuntu的22.04发行版刚出，就直接安排上了。
+3. 确定使用的系统是个比较复杂的过程，因为有过PVE虚拟机翻车的经历，这个服务器又主要承载了数据存储功能，所以要追求稳定，因此首先排除PVE和ESXi这些虚拟机系统，直接物理机装系统。然后我在虚拟机上装了最新版的Truenas scale体验了一下，这个系统是基于debian用python开发的，交互上倒没什么问题，但是因为是个纯nas系统，对主系统限制较多，自由度不高（不能直接装软件），因此也被pass，黑群晖这些就不说了，在我看来还不如truenas。一圈排除下来就只能直接装linux server了。去V2EX论坛问了老哥们的意见，推荐debian的很多，也有建议用最熟悉的系统的，
+   ~~最后我选择了后者，选了比较有把握的ubuntu server，正好ubuntu的22.04发行版刚出，就直接安排上了。~~ 2024年还是换成了debian，ubuntu server更新太频繁经常重启，有点难顶。
 
 ## 硬件
 
@@ -271,7 +267,7 @@ docker run -d \
     p3terx/aria2-pro
 ```
 
-### jellyfin
+### jenkins
 
 ```shell
 version: "3.2"
@@ -289,6 +285,28 @@ services:
       - /etc/localtime:/etc/localtime:ro
     ports:
       - "8099:8080"
+    restart: unless-stopped
+```
+
+### jellyfin
+
+```yaml
+version: "3.2"
+services:
+  jellyfin:
+    image: linuxserver/jellyfin
+    container_name: jellyfin
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=Asia/Shanghai
+    volumes:
+      - /mnt/data/docker/jellyfin/library:/config
+      - /tvshows:/data/tvshows
+      - /movies:/data/movies
+    devices:
+      - /dev/dri:/dev/dri
+    network_mode: host
     restart: unless-stopped
 ```
 
