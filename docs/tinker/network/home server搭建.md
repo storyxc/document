@@ -1195,3 +1195,53 @@ plugins = python3
 
 buffer-size = 65536
 ```
+
+### ftp server
+
+#### 安装vsftpd
+
+```shell
+apt install vsftpd
+```
+
+#### 配置
+
+`vim /etc/vsftpd.conf`
+
+```ini
+listen=NO
+listen_ipv6=YES
+# 禁止匿名用户登录
+anonymous_enable=NO
+# 允许本地用户登录
+local_enable=YES
+# 允许本地用户进行写操作
+write_enable=YES
+# 将所有本地用户限制在其主目录中
+chroot_local_user=YES
+# 允许在受限目录中有写权限
+allow_writeable_chroot=YES
+```
+
+重启`systemctl restart vsftpd`
+
+#### 创建ftp用户组和用户
+
+```shell
+usergroup add ftpuser
+# 创建用户 指定用户组、家目录、禁止用户通过ssh/控制台登录
+useradd -g ftpuser -d /home/ftpuser -s /usr/sbin/nologin newftpuser
+# 设置密码
+passwd newftpuser
+```
+
+##### 允许用户登录ftp
+
+`vim /etc/shells`，最后一行添加`/usr/sbin/nologin`
+> 在 /etc/shells 文件中添加 /usr/sbin/nologin 的作用是允许系统中某些服务（如 FTP）将使用 /usr/sbin/nologin 作为登录 shell 的用户视为合法用户。
+>
+> 允许通过特定服务登录：一些服务（如 FTP 服务器、邮件服务器等）会检查用户的登录 shell 是否在 /etc/shells 列表中，以决定是否允许用户登录。
+> 将 /usr/sbin/nologin 添加到 /etc/shells 文件后，配置了这个 shell 的用户将被这些服务视为合法用户，允许通过这些服务登录。
+>
+> 阻止用户获得交互式 shell：
+> 即使 /usr/sbin/nologin 被添加到 /etc/shells 中，用户仍然无法通过 SSH、控制台等方式获得交互式 shell。/usr/sbin/nologin 会立即终止会话并显示一条消息，通常是“此账户当前不可用”。
