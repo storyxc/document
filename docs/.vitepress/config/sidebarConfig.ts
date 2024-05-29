@@ -161,6 +161,10 @@ export const sidebar: DefaultTheme.Sidebar = {
                     text: "cpu占用率高排查思路",
                     link: "/java/others/cpu占用率高排查思路",
                 },
+                {
+                    text: "通过mysql的binlog恢复被误删的数据",
+                    link: "/java/others/通过mysql的binlog恢复被误删的数据",
+                },
             ],
         },
     ],
