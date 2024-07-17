@@ -15,7 +15,7 @@ ffmpeg -i input.mp4 -vn -acodec libmp3lame -q:a 0 ~/Downloads/output.mp3
 ### yt-dlp下载最高质量音频并由ffmpeg输出mp3
 
 ```shell
-yt-dlp -f bestaudio "https://www.youtube.com/watch?v=example" -o - | ffmpeg -i - -vn -acodec libmp3lame -q:a 0 ~/downloads/output.mp3
+yt-dlp -f bestaudio "https://www.youtube.com/watch?v=xxx" -o - | ffmpeg -i pipe:0 -vn -acodec libmp3lame -q:a 0 ~/downloads/output.mp3
 ```
 
 ### yt-dlp下载最高质量视频&音频并合成一个视频
