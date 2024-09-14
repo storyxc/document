@@ -332,6 +332,7 @@ export const sidebar: DefaultTheme.Sidebar = {
                 { text: "Grafana", link: "/linux/applications/Grafana" },
                 { text: "Clash", link: "/linux/applications/Clash" },
                 { text: "Rclone", link: "/linux/applications/Rclone" },
+                { text: "acme.sh使用", link: "linux/applications/acme.sh使用" }
             ],
         },
         {
