@@ -5,7 +5,7 @@ import { navbar } from "./config/navConfig";
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-    title: "故事",
+    title: "故事而已的个人站",
     description: "document",
     lastUpdated: true,
     cleanUrls: false,
