@@ -545,6 +545,10 @@ export const sidebar: DefaultTheme.Sidebar = {
                     text: "ubuntu-server开启网络唤醒",
                     link: "/tinker/network/ubuntu-server开启网络唤醒",
                 },
+                {
+                    text: "Cloudflare WARP代理",
+                    link: "/tinker/network/Cloudflare WARP代理",
+                }
             ],
         },
     ],
