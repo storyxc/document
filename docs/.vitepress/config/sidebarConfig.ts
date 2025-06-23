@@ -100,6 +100,10 @@ export const sidebar: DefaultTheme.Sidebar = {
                     text: "kafka常用命令记录",
                     link: "/java/middleware/kafka常用命令记录",
                 },
+                {
+                    text: "elasticsearch查询",
+                    link: "/java/middleware/elasticsearch查询",
+                }
             ],
         },
         {
