@@ -24,3 +24,8 @@ yt-dlp -f bestaudio "https://www.youtube.com/watch?v=xxx" -o - | ffmpeg -i pipe:
 yt-dlp -f bestvideo+bestaudio "https://www.youtube.com/watch?v=example" -o ~/Downloads/output.mp4 --recode-video mp4
 ```
 
+```shell
+yt-dlp --cookies ./cookie-file --downloader ffmpeg -f "bv*+ba/b"  --force-overwrite url
+
+yt-dlp --cookies ./cookie-file --downloader ffmpeg -f "bv*+ba/b" --merge-output-format mp4  --force-overwrite url
+```
