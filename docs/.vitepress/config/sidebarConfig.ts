@@ -100,6 +100,10 @@ export const sidebar: DefaultTheme.Sidebar = {
                     text: "kafka常用命令记录",
                     link: "/java/middleware/kafka常用命令记录",
                 },
+                {
+                    text: "elasticsearch查询",
+                    link: "/java/middleware/elasticsearch查询",
+                }
             ],
         },
         {
@@ -160,6 +164,10 @@ export const sidebar: DefaultTheme.Sidebar = {
                 {
                     text: "cpu占用率高排查思路",
                     link: "/java/others/cpu占用率高排查思路",
+                },
+                {
+                    text: "通过mysql的binlog恢复被误删的数据",
+                    link: "/java/others/通过mysql的binlog恢复被误删的数据",
                 },
             ],
         },
@@ -307,6 +315,9 @@ export const sidebar: DefaultTheme.Sidebar = {
                 { text: "Ubuntu-server", link: "/linux/env/Ubuntu-server" },
                 { text: "ArchLinux安装", link: "/linux/env/ArchLinux安装" },
                 { text: "Linux常用指令", link: "/linux/env/Linux常用指令" },
+                { text: "logrotate", link: "/linux/env/logrotate" },
+                { text: "mydumper", link: "/linux/env/mydumper" },
+                { text: "Linux系统盘迁移", link: "/linux/env/Linux系统盘迁移"},
             ],
         },
         {
@@ -328,6 +339,7 @@ export const sidebar: DefaultTheme.Sidebar = {
                 { text: "Grafana", link: "/linux/applications/Grafana" },
                 { text: "Clash", link: "/linux/applications/Clash" },
                 { text: "Rclone", link: "/linux/applications/Rclone" },
+                { text: "acme.sh使用", link: "linux/applications/acme.sh使用" }
             ],
         },
         {
@@ -540,6 +552,10 @@ export const sidebar: DefaultTheme.Sidebar = {
                     text: "ubuntu-server开启网络唤醒",
                     link: "/tinker/network/ubuntu-server开启网络唤醒",
                 },
+                {
+                    text: "Cloudflare WARP代理",
+                    link: "/tinker/network/Cloudflare WARP代理",
+                }
             ],
         },
     ],
