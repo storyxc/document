@@ -75,13 +75,16 @@ mkdir -p ~/Downloads/canal/admin && tar -zxvf canal.admin-1.1.4.tar.gz -C ~/Down
 >
 > 简单解释：
 >
-> 1. instance是最原始的业务订阅诉求，它会和 server/集群 这两个面向资源服务属性的进行关联，比如instance A绑定到server A上或者集群 A上，
+> 1. instance是最原始的业务订阅诉求，它会和 server/集群 这两个面向资源服务属性的进行关联，比如instance A绑定到server
+     A上或者集群 A上，
 > 2. 有了任务和资源的绑定关系后，对应的资源服务就会接收到这个任务配置，在对应的资源上动态加载instance，并提供服务
      >
 
 - 动态加载的过程，对应配置文件中的autoScan配置，只不过基于canal-admin之后可就以变为远程的web操作，而不需要在机器上运维配置文件
 
-> 3. 将server抽象成资源之后，原本canal-server运行所需要的canal.properties/instance.properties配置文件就需要在web ui上进行统一运维，每个server只需要以最基本的启动配置 (比如知道一下canal-admin的manager地址，以及访问配置的账号、密码即可)
+> 3. 将server抽象成资源之后，原本canal-server运行所需要的canal.properties/instance.properties配置文件就需要在web
+     ui上进行统一运维，每个server只需要以最基本的启动配置 (
+     比如知道一下canal-admin的manager地址，以及访问配置的账号、密码即可)
 
 - 新建server，按照图中配置即可
 
@@ -435,7 +438,9 @@ mkdir -p ~/Downloads/canal/deployer && tar -zxvf canal.deployer-1.1.4.tar.gz -C 
 
     1. 注意ip前后不能有空格，不然会无法启动netty server从而无法启动canal server，应该是后台没做trim
 
-    2. 如果不填写`canal.ip`和`canal.register.ip`两个配置项，代码中将通过`AddressUtils.getHostIp()`获取本机的ip地址，如果本地有docker/orbstack等创建的虚拟网络设备会导致启动canal-server后识别到多个server且是不同的ip（docker0网桥或orbstack容器等的ip),比较膈应人。([#issue47](https://github.com/alibaba/canal/issues/47))
+    2. 如果不填写`canal.ip`和`canal.register.ip`两个配置项，代码中将通过`AddressUtils.getHostIp()`
+       获取本机的ip地址，如果本地有docker/orbstack等创建的虚拟网络设备会导致启动canal-server后识别到多个server且是不同的ip（docker0网桥或orbstack容器等的ip)
+       ,比较膈应人。([#issue47](https://github.com/alibaba/canal/issues/47))
 
   源码：
 
@@ -458,17 +463,19 @@ mkdir -p ~/Downloads/canal/deployer && tar -zxvf canal.deployer-1.1.4.tar.gz -C 
   :::
 
 
-- 执行bin目录下的startup.sh
+- 执行bin目录下的startup.sh (bin/startup.sh local)
 
 - 直接在canal admin的webUI界面中配置instance，等待启动即可,如有问题查看`deploy/logs/story/story.log`
 
-  > 具体配置项参见[wiki](https://github.com/alibaba/canal/wiki/AdminGuide#properties%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6)
+  >
+  具体配置项参见[wiki](https://github.com/alibaba/canal/wiki/AdminGuide#properties%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6)
 
   ![image-20231223002954201](https://storyxc.com/images/blog/9e206011-7434-4313-a178-598aed41cc97.png)
 
 :::tip
 
-如果在server的配置文件中填了相同的配置项，那么instance中的配置会被server中的覆盖，例如`canal.instance.tsdb.url`配置([#issue4669](https://github.com/alibaba/canal/issues/4669))
+如果在server的配置文件中填了相同的配置项，那么instance中的配置会被server中的覆盖，例如`canal.instance.tsdb.url`
+配置([#issue4669](https://github.com/alibaba/canal/issues/4669))
 
 :::
 
